@@ -1,0 +1,19 @@
+# Entorno virtual
+.env
+venv/
+.env/
+
+# Bytecode
+__pycache__/
+*.pyc
+
+# Archivos de bases de datos locales
+db.sqlite3
+
+# Archivos de compilación de React
+frontend/node_modules/
+frontend/build/
+
+# Config del editor
+.vscode/
+.idea/
