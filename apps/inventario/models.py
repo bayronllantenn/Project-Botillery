@@ -17,6 +17,7 @@ class Proveedor(models.Model):
 
 class Producto(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT, related_name="productos")
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT, related_name="productos", null=True, blank=True)
     nombre = models.CharField(max_length=150)
     precio = models.PositiveIntegerField()  
     stock = models.PositiveIntegerField(default=0)
