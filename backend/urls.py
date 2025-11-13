@@ -1,9 +1,15 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
+@api_view(['GET'])
 def home(request):
-    return JsonResponse({"mensaje": "Backend funcionando"})
+    return Response({
+        "usuarios": "/api/usuarios/",
+        "inventario": "/api/inventario/",
+        "ventas": "/api/ventas/",
+    })
 
 urlpatterns = [
     path("", home),

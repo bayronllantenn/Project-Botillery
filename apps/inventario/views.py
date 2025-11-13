@@ -6,6 +6,15 @@ from .serializers import CategoriaSerializer, ProductoSerializer, ProveedorSeria
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 
+@api_view(["GET"])
+def inventario_root(request):
+    return Response({
+        "categorias": "/api/inventario/categorias/",
+        "productos": "/api/inventario/productos/",
+        "proveedores": "/api/inventario/proveedores/",
+        "ajustar_stock": "/api/inventario/productos/ajustar_stock/",
+    })
+
 @api_view(["GET", "POST"])
 def categorias(request):
     if request.method == "GET":
