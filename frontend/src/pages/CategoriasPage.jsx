@@ -23,13 +23,13 @@ export default function CategoriasPage() {
     } catch (e) {
       alert("No se pudo crear la categoría");
     }
-  };
+  };     
 
   useEffect(() => { load(); }, []);
 
   return (
     <div className="container">
-      <h2>Categorías</h2>
+      <h2>Categorías</h2> 
       <CategoriaForm onAdd={add} />
       <CategoriaList categorias={categorias} />
     </div>

@@ -1,0 +1,4 @@
+.container { max-width: 1000px; margin: 0 auto; padding: 16px; }
+.nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.card-form { display: flex; gap: 8px; flex-wrap: wrap; }
+.card-form input, .card-form select, .card-form textarea { min-width: 160px; }

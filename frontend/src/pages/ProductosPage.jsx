@@ -18,7 +18,6 @@ export default function ProductosPage() {
 
       const prodsRes = await api.get("/inventario/productos/");
       setProductos(prodsRes.data);
-
     } catch (error) {
       setCategorias([]);
       setProveedores([]);
@@ -36,13 +35,39 @@ export default function ProductosPage() {
     }
   };
 
-  useEffect(() => { loadAll(); }, []);
+  useEffect(() => {
+    loadAll();
+  }, []);
 
   return (
-    <div className="container">
-      <h2>Productos</h2>
-      <ProductosForm cats={categorias} provs={proveedores} onAdd={addProducto} />
-      <ProductosList productos={productos} />
+    <div className="container py-4">
+      <h2 className="mb-4">Productos</h2>
+
+      <div className="row g-4">
+        
+        <div className="col-12 col-lg-4">
+          <div className="card shadow-sm">
+            <div className="card-header">Nuevo Producto</div>
+            <div className="card-body">
+              <ProductosForm
+                cats={categorias}
+                provs={proveedores}
+                onAdd={addProducto}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 col-lg-8">
+          <div className="card shadow-sm">
+            <div className="card-header">Listado de Productos</div>
+            <div className="card-body p-0">
+              <ProductosList productos={productos} />
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }
