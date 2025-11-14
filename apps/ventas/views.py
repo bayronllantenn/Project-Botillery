@@ -5,7 +5,7 @@ from .models import Venta
 from .serializers import VentaListSerializer, VentaCreateSerializer
 
 @api_view(["GET"])
-def ventas_listar(request):
+def ventas_listar(request): 
     qs = Venta.objects.prefetch_related("detalles").order_by("-id")
     return Response(VentaListSerializer(qs, many=True).data)
 

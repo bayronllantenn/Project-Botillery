@@ -26,7 +26,7 @@ def register(request):
     email = (request.data.get("email") or "").strip()
 
     if not username or not password:
-        return Response({"error": "username y password son obligatorios"}, status=400)
+        return Response({"error": "Usuario y Contraseña son obligatorios"}, status=400)
     if User.objects.filter(username=username).exists():
         return Response({"error": "username ya está en uso"}, status=400)
     if len(password) < 4:
@@ -48,7 +48,7 @@ def login_view(request):
     username = request.data.get("username")
     password = request.data.get("password")
     if not username or not password:
-        return Response({"error": "username y password son obligatorios"}, status=400)
+        return Response({"error": "Usuario y Contraseña son obligatorios"}, status=400)
     user = authenticate(request, username=username, password=password)
     if user is None:
         return Response({"error": "Credenciales inválidas"}, status=400)

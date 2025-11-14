@@ -3,7 +3,7 @@ const ProveedorList = (props = {}) => {
   const data = Array.isArray(proveedores) ? proveedores : [];
   return (
   <div>
-    <h2>Proveedores</h2>
+    <h2>Listado</h2>
     <ul>
       {data.map((p) => (
         <li

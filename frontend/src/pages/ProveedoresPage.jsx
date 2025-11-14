@@ -8,7 +8,7 @@ export default function ProveedoresPage() {
 
   const load = async () => {
     try {
-      const data = await api.get("/inventario/proveedores/").then(r => r.data);
+      const data = await api.get("/inventario/proveedores/").then(r => r.data); 
       setProveedores(Array.isArray(data) ? data : []);
     } catch {
       setProveedores([]);
