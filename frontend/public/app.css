@@ -1,12 +1,32 @@
 body{
   margin:0;
-  background-image:url('/img/fondo.png');
+  background-image:url('/img/negro-gris.jpg');
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
   min-height:100vh;
 }
 
+h3 {
+  text-align: center;
+}
+
+.input-icon-wrapper {
+  position: relative;
+}
+
+.input-with-icon {
+  padding-left: 32px; 
+}
+
+.input-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; 
+  color: #999;
+}
 
 /* Formulario Boostrap */
 .container{max-width:1000px;margin:0 auto;padding:16px}
@@ -17,7 +37,7 @@ body{
 .brand-title{font-size:1.4rem;font-weight:600}
 .auth-wrap{display:flex;justify-content:center;margin-top:24px}
 .auth-card{width:100%;max-width:420px;background:rgba(255,255,255,.92);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08);padding:20px}
-.auth-card h3{margin-bottom:12px}
+.auth-card h3{margin-bottom:12px}  
 .auth-actions{display:flex;gap:8px;align-items:center;justify-content:space-between}
 
 .brandbar {
