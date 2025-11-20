@@ -14,9 +14,24 @@ class ProveedorSerializer(serializers.ModelSerializer):
 class ProductoSerializer(serializers.ModelSerializer):
     categoria_detalle = CategoriaSerializer(source="categoria", read_only=True)
     proveedor_detalle = ProveedorSerializer(source="proveedor", read_only=True)
+
     class Meta:
         model = Producto
-        fields = ["id","categoria","proveedor","nombre","precio","stock","descripcion","categoria_detalle","proveedor_detalle"]
+        fields = [
+            "id",
+            "categoria",
+            "proveedor",
+            "codigo_barra",
+            "nombre",
+            "descripcion",
+            "imagen",
+            "formato_venta",
+            "precio",
+            "stock",
+            "costo",
+            "categoria_detalle",
+            "proveedor_detalle",
+        ]
 
 class DetalleCompraSerializer(serializers.ModelSerializer):
     class Meta:

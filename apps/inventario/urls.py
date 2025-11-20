@@ -1,10 +1,18 @@
 from django.urls import path
-from .views import inventario_root, categorias, productos, proveedores, ajustar_stock
+from .views import (
+    producto_lista,
+    producto_detalle,
+    categoria_lista,
+    categoria_detalle,
+    proveedor_lista,
+    ajustar_stock,
+)
 
 urlpatterns = [
-    path("", inventario_root),
-    path("categorias/", categorias),
-    path("productos/", productos),
-    path("proveedores/", proveedores),
+    path("productos/", producto_lista),
+    path("productos/<int:pk>/", producto_detalle),
+    path("categorias/", categoria_lista),
+    path("categorias/<int:pk>/", categoria_detalle),
+    path("proveedores/", proveedor_lista),
     path("productos/ajustar_stock/", ajustar_stock),
 ]

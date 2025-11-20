@@ -16,14 +16,26 @@ class Proveedor(models.Model):
         return self.nombre
 
 class Producto(models.Model):
+    # Las relaciones
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT, related_name="productos")
     proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT, related_name="productos", null=True, blank=True)
+    
+    #  identidad del producto - vista producto 
+    codigo_barra = models.CharField(max_length=50, blank=True, null=True, unique=True)
     nombre = models.CharField(max_length=150)
-    precio = models.PositiveIntegerField()  
-    stock = models.PositiveIntegerField(default=0)
     descripcion = models.TextField(blank=True)
+    imagen = models.ImageField(upload_to="productos", null=True, blank=True)
+    
+    # precios - Vista Productos 
+    formato_venta = models.CharField(max_length=100, blank=True) 
+    precio = models.PositiveIntegerField(verbose_name="Precio Venta") 
+    
+    # vista inventario
+    stock = models.PositiveIntegerField(default=0)
+    costo = models.PositiveIntegerField(default=0)
+    
     def __str__(self): 
-        return self.nombre
+        return f"{self.nombre} - {self.formato_venta}"
 
 class Compra(models.Model):
     proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT, related_name="compras")
