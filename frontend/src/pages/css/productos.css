@@ -1,0 +1,75 @@
+body.body-productos {
+  background-color: #ffffff;
+  background-image: none;
+}
+
+.album {
+  background-color: black;
+}
+
+.productos-hero {
+  width: 100%;
+  margin: 0 auto;
+  background-color: white;
+}
+
+.album .container {
+  max-width: 1400px;
+}
+
+@media (min-width: 1400px) {
+  .album .container {
+    max-width: 1600px;
+  }
+}
+
+.btn-productos {
+  background: #444;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 10px 24px;
+}
+
+.btn-productos:hover {
+  background: #555;
+  color: #fff;
+  border-color: #555;
+}
+
+.overlay-productos {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.overlay-backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.overlay-modal {
+  position: relative;
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.overlay-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.overlay-modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}

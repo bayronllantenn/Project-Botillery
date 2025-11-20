@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import ProveedorForm from "../components/ProveedorForm";
 import ProveedorList from "../components/ProveedorList";
+import "./css/categoria.css";
 
 export default function ProveedoresPage() {
   const [proveedores, setProveedores] = useState([]);
 
   const load = async () => {
     try {
-      const data = await api.get("/inventario/proveedores/").then(r => r.data); 
+      const data = await api
+        .get("/inventario/proveedores/")
+        .then((r) => r.data);
       setProveedores(Array.isArray(data) ? data : []);
     } catch {
       setProveedores([]);
@@ -24,12 +27,15 @@ export default function ProveedoresPage() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   return (
-    <div className="container">
-      <h2>Proveedores</h2>
-      <ProveedorForm onAdd={add} />
+    <div className="proveedor-wrapper">
+      <div className="proveedor-actions">
+        <ProveedorForm onAdd={add} />
+      </div>
       <ProveedorList proveedores={proveedores} />
     </div>
   );

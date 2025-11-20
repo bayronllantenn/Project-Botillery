@@ -1,0 +1,95 @@
+.body-inventario {
+  background-color: #ffffff;
+  background-image: none;
+}
+
+.productos-hero {
+  width: 100%;
+  margin: 0 auto;
+  background-color: white;
+}
+
+.btn-productos {
+  background: #444;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 10px 24px;
+}
+
+.btn-productos:hover {
+  background: #555;
+  color: #fff;
+  border-color: #555;
+}
+
+.inventario-form-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.inventario-form-row select,
+.inventario-form-row input {
+  height: 38px;
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  min-width: 220px;
+}
+
+.inventario-form-row button {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 6px;
+  border: 1px solid #111;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Estilos tomados de categoria.css para unificar look */
+:root {
+  --primary: #000000;
+  --primary-light: #3b82f6;
+  --accent: #f59e0b;
+  --bg-light: #f8fafc;
+  --text-dark: #1f2937;
+}
+
+.inventario-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px 20px 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.inventario-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.inventario-table thead {
+  background: var(--bg-light);
+}
+
+.inventario-table th {
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-align: left;
+}
+
+.inventario-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #374151;
+}
+
+.inventario-table tbody tr:hover {
+  background: #f3f4f6;
+}

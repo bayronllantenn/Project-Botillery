@@ -1,0 +1,67 @@
+@import url("./inventario.css");
+
+.categoria-wrapper,
+.proveedor-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.categoria-actions,
+.proveedor-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.categoria-search {
+  width: 260px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 16px;
+}
+
+.categoria-table,
+.proveedor-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.categoria-table thead,
+.proveedor-table thead {
+  background: var(--bg-light);
+}
+
+.categoria-table th,
+.proveedor-table th {
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-align: left;
+}
+
+.categoria-table td,
+.proveedor-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #374151;
+}
+
+.categoria-table tbody tr:hover,
+.proveedor-table tbody tr:hover {
+  background: #f3f4f6;
+}
+
+.desc-badge {
+  background: var(--bg-light);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}

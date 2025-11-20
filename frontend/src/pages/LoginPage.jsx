@@ -1,5 +1,6 @@
 import { useState } from "react";
 import api from "../services/api";
+import "./css/auth.css";
 
 export default function LoginPage(props) {
   const [username, setUsername] = useState("");
@@ -12,7 +13,7 @@ export default function LoginPage(props) {
     setMsg("");
 
     if (!username || !password) {
-      setMsg("Usuario y contraseña son obligatorios");
+      setMsg("Error: Usuario y contraseña son obligatorios");
       return;
     }
 
@@ -30,42 +31,46 @@ export default function LoginPage(props) {
       if (props.onLoggedIn) {
         props.onLoggedIn(data);
       }
-
     } catch (err) {
-      setMsg("Error iniciando sesión");
+      setMsg("Error: Credenciales Invalidas");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-        <div className="auth-wrap">
-          <div className="auth-card">
-            <h3 className="text-center mb-3">Inicio Sesion</h3>
+    <div className="auth-wrap">
+      <div className="auth-logo">
+        <img src="/img/logo.png" alt="Logo" className="auth-logo-img" />
+      </div>
+      <div className="auth-card">
+        <h3 className="text-center mb-3">Bienvenido</h3>
+        <p className="text-center text-secondary">
+          Ingresa con tu cuenta o registrate
+        </p>
 
-            <form onSubmit={submit}>
-      <div className="mb-3 input-icon-wrapper">
-      <input
-        className="form-control input-with-icon"
-        type="text"
-        placeholder="Usuario"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        className="input-icon"
-        viewBox="0 0 16 16"
-      >
-        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-      </svg>
-    </div>
+        <form onSubmit={submit}>
+          <div className="mb-3 input-icon-wrapper">
+            <input
+              className="form-control input-with-icon"
+              type="text"
+              placeholder="Usuario"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              className="input-icon"
+              viewBox="0 0 16 16"
+            >
+              <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+            </svg>
+          </div>
 
-
-      <div className="mb-3 input-icon-wrapper">            
+          <div className="mb-3 input-icon-wrapper">
             <input
               className="form-control input-with-icon"
               type="password"
@@ -73,17 +78,26 @@ export default function LoginPage(props) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-          <svg xmlns="http://www.w3.org/2000/svg" 
-          width="16" 
-          height="16" 
-          fill="currentColor" 
-          class="input-icon" 
-          viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M8 0a4 4 0 0 1 4 4v2.05a2.5 2.5 0 0 1 2 2.45v5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 13.5v-5a2.5 2.5 0 0 1 2-2.45V4a4 4 0 0 1 4-4m0 1a3 3 0 0 0-3 3v2h6V4a3 3 0 0 0-3-3"/>
-        </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="input-icon"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 0a4 4 0 0 1 4 4v2.05a2.5 2.5 0 0 1 2 2.45v5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 13.5v-5a2.5 2.5 0 0 1 2-2.45V4a4 4 0 0 1 4-4m0 1a3 3 0 0 0-3 3v2h6V4a3 3 0 0 0-3-3"
+              />
+            </svg>
           </div>
 
-          <button class="btn btn-dark w-100 mt-2" type="submit" disabled={loading}>
+          <button
+            class="btn btn-dark w-100 mt-2"
+            type="submit"
+            disabled={loading}
+          >
             {loading ? "Ingresando..." : "Entrar"}
           </button>
 
@@ -96,11 +110,7 @@ export default function LoginPage(props) {
           </button>
         </form>
 
-        {msg && (
-          <div className="alert alert-info mt-3" role="alert">
-            {msg}
-          </div>
-        )}
+        {msg && <div class="alert alert-danger mt-3 error-rojo">{msg}</div>}
       </div>
     </div>
   );

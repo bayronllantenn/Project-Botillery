@@ -1,8 +1,14 @@
 import { useState } from "react";
 import api, { unwrapError } from "../services/api";
+import "./css/auth.css";
 
 export default function RegisterPage({ onRegistered }) {
-  const [form, setForm] = useState({ username: "", nombre: "", email: "", password: "" });
+  const [form, setForm] = useState({
+    username: "",
+    nombre: "",
+    email: "",
+    password: "",
+  });
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
 
@@ -14,7 +20,7 @@ export default function RegisterPage({ onRegistered }) {
       return;
     }
     if (form.password.length <= 8) {
-      setMsg("La contraseña debe tener al menos 8 caracteres");
+      setMsg("Error: La contraseña debe tener al menos 8 caracteres");
       return;
     }
     setLoading(true);
@@ -35,8 +41,14 @@ export default function RegisterPage({ onRegistered }) {
 
   return (
     <div className="auth-wrap">
+      <div className="auth-logo">
+        <img src="/img/logo.png" alt="Logo" className="auth-logo-img" />
+      </div>
       <div className="auth-card">
-        <h3>Registrate</h3>
+        <h3 className="text-center mb-3">Crear cuenta</h3>
+        <p className="text-center text-secondary">
+          Completa el formulario para registrarte
+        </p>
         <form onSubmit={submit}>
           <div className="mb-3">
             <div className="input-icon-wrapper">
@@ -64,7 +76,7 @@ export default function RegisterPage({ onRegistered }) {
               <input
                 className="form-control input-with-icon"
                 type="text"
-                placeholder="Nombre"
+                placeholder="Nombre Completo"
                 value={form.nombre}
                 onChange={(e) => setForm({ ...form, nombre: e.target.value })}
               />
@@ -85,7 +97,7 @@ export default function RegisterPage({ onRegistered }) {
               <input
                 className="form-control input-with-icon"
                 type="email"
-                placeholder="Correo"
+                placeholder="Correo Electronico"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
@@ -126,7 +138,11 @@ export default function RegisterPage({ onRegistered }) {
               </svg>
             </div>
           </div>
-          <button class="btn btn-dark w-100 mt-2" type="submit" disabled={loading}>
+          <button
+            class="btn btn-dark w-100 mt-2"
+            type="submit"
+            disabled={loading}
+          >
             {loading ? "Creando..." : "Crear cuenta"}
           </button>
           <button
@@ -138,7 +154,7 @@ export default function RegisterPage({ onRegistered }) {
           </button>
         </form>
         {msg && (
-          <div className="alert alert-info mt-3" role="alert">
+          <div className="alert alert-danger mt-3 error-rojo" role="alert">
             {msg}
           </div>
         )}
