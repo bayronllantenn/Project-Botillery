@@ -10,12 +10,23 @@ const ProveedorForm = ({ onAdd }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.nombre.trim()) return alert("Ingresa un nombre para el proveedor");
+    if (!form.nombre.trim()) {
+      return alert("Ingresa un nombre para el proveedor");
+    }
+
+    const direccionTrim = form.direccion.trim();
+    if (
+      direccionTrim &&
+      (direccionTrim.length < 5 || direccionTrim.length > 80)
+    ) {
+      return alert("La direccion debe tener entre 5 y 80 caracteres");
+    }
+
     onAdd({
       nombre: form.nombre.trim(),
       telefono: form.telefono || "",
       correo: form.correo || "",
-      direccion: form.direccion || "",
+      direccion: direccionTrim,
     });
     setForm({ nombre: "", telefono: "", correo: "", direccion: "" });
   };
@@ -68,4 +79,3 @@ const ProveedorForm = ({ onAdd }) => {
 };
 
 export default ProveedorForm;
-

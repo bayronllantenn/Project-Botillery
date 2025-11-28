@@ -2,10 +2,21 @@ import { useState } from "react";
 
 const CategoriaList = ({ categorias = [], onEdit, onDelete }) => {
   const [search, setSearch] = useState("");
+  const LIMIT_DESC = 60;
 
   const filtradas = categorias.filter((c) =>
     c.nombre.toLowerCase().includes(search.toLowerCase())
   );
+
+  function formatoDescripcion(texto) {
+    if (!texto) {
+      return "";
+    }
+    if (texto.length > LIMIT_DESC) {
+      return texto.slice(0, LIMIT_DESC) + "...";
+    }
+    return texto;
+  }
 
   return (
     <div className="categoria-card">
@@ -33,7 +44,12 @@ const CategoriaList = ({ categorias = [], onEdit, onDelete }) => {
               <td>{cat.nombre}</td>
               <td>
                 {cat.descripcion ? (
-                  <span className="desc-badge">{cat.descripcion}</span>
+                  <span
+                    className="desc-badge"
+                    title={cat.descripcion}
+                  >
+                    {formatoDescripcion(cat.descripcion)}
+                  </span>
                 ) : (
                   "-"
                 )}

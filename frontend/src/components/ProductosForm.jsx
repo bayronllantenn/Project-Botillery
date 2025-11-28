@@ -109,6 +109,12 @@ export default function ProductosForm({ cats, provs, onAdd }) {
           placeholder="Código de Barras"
           value={form.codigo_barra}
           onChange={handleChange}
+          inputMode="numeric"
+          minLength={13}
+          maxLength={14}
+          pattern="[0-9]{13,14}"
+          title="Ingresa 13 o 14 dígitos"
+          required
         />
       </div>
 
@@ -159,7 +165,7 @@ export default function ProductosForm({ cats, provs, onAdd }) {
       </div>
 
       <div className="col-12">
-        <button className="btn btn-primary w-100" type="submit">
+        <button className="btn btn-dark w-100" type="submit">
           Guardar
         </button>
       </div>

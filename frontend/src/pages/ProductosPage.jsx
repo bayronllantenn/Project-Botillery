@@ -110,9 +110,6 @@ export default function ProductosPage() {
           </div>
         </div>
         <div className="d-flex gap-2 flex-wrap mt-3">
-          <button type="button" className="btn-productos" onClick={loadAll}>
-            Actualizar lista
-          </button>
           <button
             type="button"
             className="btn-productos"
@@ -157,7 +154,7 @@ export default function ProductosPage() {
                     <option value="">Producto</option>
                     {productos.map((p) => (
                       <option key={p.id} value={p.id}>
-                        {p.nombre} (Stock: {p.stock})
+                        {p.nombre} - {p.formato_venta} (Stock: {p.stock})
                       </option>
                     ))}
                   </select>

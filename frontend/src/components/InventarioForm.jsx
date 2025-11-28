@@ -8,7 +8,8 @@ const InventarioForm = ({ productos, ajuste, onChange, onSubmit }) => {
         <option value="">Seleccione Producto</option>
         {productos.map((p) => (
           <option key={p.id} value={p.id}>
-            {p.nombre} - {p.formato_venta || "Unidad"}
+            {p.nombre}
+            {p.formato_venta ? ` - ${p.formato_venta}` : ""}
           </option>
         ))}
       </select>

@@ -12,7 +12,7 @@ class DetalleInputSerializer(serializers.Serializer):
 class VentaCreateSerializer(serializers.Serializer):
     # Valido que siempre venga al menos un detalle
     detalles = DetalleInputSerializer(many=True, allow_empty=False)
-
+# transaction atomic nos sirve si hay un error en cualquier paso ej al descontar stock después de una venta todo el proceso se cancela
     @transaction.atomic
     def create(self, validated_data):
         # Creo el registro Venta que va a agrupar todos los detalles

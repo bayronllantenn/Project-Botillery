@@ -12,6 +12,7 @@ export default function App() {
   /*  Carga la sesion del usuario guardando la memoria local en el navegador */
   const [user, setUser] = useState(() => {
     try {
+      /*convertir la cadena de texto en un objeto JS*/
       return JSON.parse(localStorage.getItem("user") || "null");
     } catch {
       return null;
@@ -21,16 +22,21 @@ export default function App() {
   /*  verificar si el usuario logueado es admin */
   const isAdmin = user?.rol === "admin";
 
+  /*  si el usuario ya inicio sesion debe redirigirlo automaticamente a productos  */
   useEffect(() => {
     if (user) {
       if (view === "login" || view === "register") setView("productos");
     } else {
+      /* Si no lo envia de vuelta al login */
       if (view !== "login" && view !== "register") setView("login");
     }
   }, [user, view]);
 
+  /* manejar que sucede despues de que el usuario inicie sesion */
   const onLoggedIn = (u) => {
     setUser(u);
+    /* Guarda los datos en la memoria del navegador ej: si el usuario cierra la pestaña y la vuelve a abrir
+    la app pueda leerlo y iniciar sesion aytomaticamente*/
     localStorage.setItem("user", JSON.stringify(u));
     setView("productos");
   };
@@ -69,11 +75,7 @@ export default function App() {
         <div className="navbar">
           <img src="/img/logo.png" alt="" className="logo" />
           <div className="nav-actions">
-            <button
-              type="button"
-              className="nav-btn nav-btn-role"
-              onClick={() => setView("productos")}
-            >
+            <button type="button" className="nav-btn nav-btn-role">
               <span className="nav-btn-icon">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +92,7 @@ export default function App() {
                 </svg>
               </span>
               <span className="nav-btn-label">
-                {isAdmin ? "Admin" : "Usuario"}
+                {isAdmin ? "Admin" : "Trabajador"}
               </span>
             </button>
             <button

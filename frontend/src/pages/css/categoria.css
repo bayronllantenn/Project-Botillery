@@ -10,6 +10,13 @@
   margin: 0 auto;
 }
 
+.proveedor-wrapper {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
+
 .categoria-actions,
 .proveedor-actions {
   display: flex;
@@ -60,8 +67,14 @@
 }
 
 .desc-badge {
-  background: var(--bg-light);
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 12px;
+  display: inline-block;
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: 13px;
+  color: #374151;
 }

@@ -6,7 +6,6 @@ import "../pages/css/categoria.css";
 
 export default function CategoriasPage() {
   const [categorias, setCategorias] = useState([]);
-  const [editando, setEditando] = useState(null);
   const [mostrarForm, setMostrarForm] = useState(false);
 
   const load = async () => {
@@ -34,10 +33,30 @@ export default function CategoriasPage() {
         descripcion,
       });
       await load();
-      setEditando(null);
     } catch (error) {
       window.alert("No se pudo actualizar la categoría");
     }
+  };
+
+  const editarCategoria = async (cat) => {
+    if (!cat) return;
+
+    const nuevoNombre = window.prompt("Nuevo nombre:", cat.nombre || "");
+    if (nuevoNombre === null) return;
+    const nombre = nuevoNombre.trim();
+    if (!nombre) {
+      window.alert("Debes ingresar un nombre");
+      return;
+    }
+
+    const nuevaDescripcion = window.prompt(
+      "Nueva descripcion:",
+      cat.descripcion || ""
+    );
+    if (nuevaDescripcion === null) return;
+    const descripcion = nuevaDescripcion.trim();
+
+    await update(cat.id, { nombre, descripcion });
   };
 
   const remove = async (id) => {
@@ -56,71 +75,62 @@ export default function CategoriasPage() {
     load();
   }, []);
 
-  return (
-    <main>
-      <button type="button" className="btn-productos" onClick={load}>
-        Actualizar lista
-      </button>
-      <button
-        type="button"
-        className="btn-productos"
-        onClick={() => {
-          setEditando(null);
-          setMostrarForm(true);
-        }}
-      >
-        Nueva categoría
-      </button>
+  const blurActivo = mostrarForm;
 
-      <section className="py-4">
-        <CategoriaList
-          categorias={categorias}
-          onEdit={(cat) => {
-            setEditando(cat);
-            setMostrarForm(true);
-          }}
-          onDelete={remove}
-        />
-      </section>
+  return (
+    <>
+      <main className={blurActivo ? "admin-blur" : ""}>
+        <section className="py-3">
+          <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <h3 className="mb-0">Categorías</h3>
+            <button
+              type="button"
+              className="btn btn-dark"
+              onClick={() => {
+                setMostrarForm(true);
+              }}
+            >
+              Nueva categoría
+            </button>
+          </div>
+
+          <CategoriaList
+            categorias={categorias}
+            onEdit={editarCategoria}
+            onDelete={remove}
+          />
+        </section>
+      </main>
 
       {mostrarForm && (
-        <div className="overlay-categorias">
-          <div
-            className="overlay-backdrop"
-            onClick={() => {
-              setMostrarForm(false);
-              setEditando(null);
-            }}
-          />
-          <div className="overlay-modal">
-            <div className="overlay-modal-header">
-              <h5>{editando ? "Editar categoría" : "Nueva categoría"}</h5>
+        <div
+          className="product-modal-backdrop"
+          onClick={() => {
+            setMostrarForm(false);
+          }}
+        >
+          <div className="product-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="product-modal-head">
               <button
                 type="button"
-                className="btn-close"
+                className="product-modal-close"
                 onClick={() => {
                   setMostrarForm(false);
-                  setEditando(null);
                 }}
-              />
+                aria-label="Cerrar formulario"
+              >
+                ×
+              </button>
             </div>
-            <div className="overlay-modal-body">
-              <CategoriaForm
-                key={editando ? editando.id : "crear"}
-                onAdd={async (data) => {
-                  await add(data);
-                  setMostrarForm(false);
-                }}
-                onEdit={async (id, data) => {
-                  await update(id, data);
-                  setMostrarForm(false);
-                }}
-                editando={editando}
-              />
-            </div>
+            <CategoriaForm
+              onAdd={async (data) => {
+                await add(data);
+                setMostrarForm(false);
+              }}
+            />
           </div>
         </div>
       )}
-    </main>
+    </>
   );
 }
