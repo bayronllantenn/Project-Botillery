@@ -48,7 +48,7 @@ export default function InventarioPage() {
   return (
     <section className="py-4">
       <div style={{ padding: 16 }}>
-        <h2>Inventario</h2>
+        <h3>Inventario</h3>
         <InventarioForm
           productos={productos}
           ajuste={ajuste}
