@@ -1,8 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const CategoriaForm = ({ onAdd }) => {
+const CategoriaForm = ({ onAdd, onEdit, editando }) => {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
+
+  useEffect(() => {
+    if (editando) {
+      setNombre(editando.nombre);
+      setDescripcion(editando.descripcion);
+    } else {
+      setNombre("");
+      setDescripcion("");
+    }
+  }, [editando]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,7 +22,11 @@ const CategoriaForm = ({ onAdd }) => {
       return;
     }
 
-    onAdd({ nombre, descripcion });
+    if (editando) {
+      onEdit(editando.id, { nombre, descripcion });
+    } else {
+      onAdd({ nombre, descripcion });
+    }
 
     setNombre("");
     setDescripcion("");
@@ -20,7 +34,7 @@ const CategoriaForm = ({ onAdd }) => {
 
   return (
     <form className="categoria-form" onSubmit={handleSubmit}>
-      <h4>Agregar Categoría</h4>
+      <h4>{editando ? "Editar Categoría" : "Agregar Categoría"}</h4>
 
       <div className="mb-3">
         <label className="form-label">Nombre</label>
@@ -45,7 +59,7 @@ const CategoriaForm = ({ onAdd }) => {
       </div>
 
       <button type="submit" className="btn btn-primary">
-        Agregar
+        {editando ? "Guardar Cambios" : "Agregar"}
       </button>
     </form>
   );
