@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api, { unwrapError } from "../services/api";
 import "./css/auth.css";
 
@@ -11,6 +11,13 @@ export default function RegisterPage({ onRegistered }) {
   });
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
+
+  useEffect(() => {
+    document.body.classList.add("auth-page");
+    return () => {
+      document.body.classList.remove("auth-page");
+    };
+  }, []);
 
   const submit = async (e) => {
     e.preventDefault();

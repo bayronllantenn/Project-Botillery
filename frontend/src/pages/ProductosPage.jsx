@@ -83,7 +83,6 @@ export default function ProductosPage() {
           <div className="seller-card">
             <div className="seller-card-head">
               <span>Mis Ventas</span>
-              <span className="seller-icon">🛒</span>
             </div>
             <div className="seller-card-body">
               <span className="seller-number">{resumen.mis_ventas}</span>
@@ -92,7 +91,6 @@ export default function ProductosPage() {
           <div className="seller-card">
             <div className="seller-card-head">
               <span>Total Vendido</span>
-              <span className="seller-icon">📈</span>
             </div>
             <div className="seller-card-body">
               <span className="seller-number">
@@ -103,7 +101,6 @@ export default function ProductosPage() {
           <div className="seller-card">
             <div className="seller-card-head">
               <span>Productos Disponibles</span>
-              <span className="seller-icon">📦</span>
             </div>
             <div className="seller-card-body">
               <span className="seller-number">

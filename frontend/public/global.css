@@ -1,0 +1,8 @@
+body {
+  margin: 0;
+  background-image: url("/img/negro-gris.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+}

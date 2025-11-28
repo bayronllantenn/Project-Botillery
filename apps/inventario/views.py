@@ -24,6 +24,9 @@ def producto_detalle(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
 
     if request.method == 'GET':
+        # context={'request': request}) = inyecta el objeto completo dentro del serializer esto permite que el serializer acceda a informacion 
+        # contextual osea como el dominio , el usuario logueado , si necesita construir urls completas como ej puede ser una img o el detalle de un 
+        # producto
         serializer = ProductoSerializer(producto, context={'request': request})
         return Response(serializer.data)
 
@@ -110,3 +113,24 @@ def proveedor_lista(request):
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def proveedor_detalle(request, pk):
+    proveedor = get_object_or_404(Proveedor, pk=pk)
+
+    if request.method == 'GET':
+        serializer = ProveedorSerializer(proveedor)
+        return Response(serializer.data)
+
+    if request.method == 'PUT':
+        serializer = ProveedorSerializer(
+            proveedor, data=request.data, partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    proveedor.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)

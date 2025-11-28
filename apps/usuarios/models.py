@@ -8,12 +8,14 @@ class Usuario(models.Model):
     # Usamos choices para limitar los roles permitidos
     class Roles(models.TextChoices):
         ADMIN = "admin", "Administrador"
-        TRABAJADOR = "trabajador", "Trabajador"
+        VENDEDOR = "vendedor", "Vendedor"
+        BODEGUERO = "bodeguero","Bodeguero"
+
 
     rol = models.CharField(
         max_length=50,
         choices=Roles.choices,
-        default=Roles.TRABAJADOR,
+        default=Roles.VENDEDOR,
     )
 
     def __str__(self):

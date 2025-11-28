@@ -27,6 +27,19 @@ export default function ProveedoresPage() {
     }
   };
 
+  const eliminar = async (id) => {
+    const ok = window.confirm("¿Seguro que deseas eliminar este proveedor?");
+    if (!ok) return;
+
+    try {
+      await api.delete(`/inventario/proveedores/${id}/`);
+      await load();
+    } catch (error) {
+      window.alert("No se pudo eliminar el proveedor");
+      console.error(error?.response?.data || error);
+    }
+  };
+
   useEffect(() => {
     load();
   }, []);
@@ -36,7 +49,7 @@ export default function ProveedoresPage() {
       <div className="proveedor-actions">
         <ProveedorForm onAdd={add} />
       </div>
-      <ProveedorList proveedores={proveedores} />
+      <ProveedorList proveedores={proveedores} onDelete={eliminar} />
     </div>
   );
 }

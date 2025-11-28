@@ -12,6 +12,9 @@
   padding: 28px 16px;
   font-family: "Inter", sans-serif;
 }
+body.auth-page {
+  overflow: hidden;
+}
 
 .auth-logo {
   position: fixed;
