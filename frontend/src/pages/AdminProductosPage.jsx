@@ -52,17 +52,26 @@ export default function AdminProductosPage() {
     stock,
     descripcion,
     codigo_barra,
+    imagen,
   }) => {
     try {
-      await api.post("/inventario/productos/", {
-        categoria,
-        proveedor,
-        nombre,
-        formato_venta,
-        precio,
-        stock,
-        descripcion,
-        codigo_barra,
+      const formData = new FormData();
+      formData.append("categoria", categoria);
+      if (proveedor) {
+        formData.append("proveedor", proveedor);
+      }
+      formData.append("nombre", nombre);
+      formData.append("formato_venta", formato_venta);
+      formData.append("precio", precio);
+      formData.append("stock", stock ?? 0);
+      formData.append("descripcion", descripcion || "");
+      formData.append("codigo_barra", codigo_barra || "");
+      if (imagen) {
+        formData.append("imagen", imagen);
+      }
+
+      await api.post("/inventario/productos/", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
       await loadProductos();
       setMostrarForm(false);

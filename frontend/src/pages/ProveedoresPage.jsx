@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import ProveedorForm from "../components/ProveedorForm";
 import ProveedorList from "../components/ProveedorList";
-import "./css/categoria.css";
+import "../styles/proveedor.css";
 
 export default function ProveedoresPage() {
   const [proveedores, setProveedores] = useState([]);
@@ -31,7 +31,10 @@ export default function ProveedoresPage() {
   const editar = async (prov) => {
     if (!prov) return;
 
-    const telInput = window.prompt("Telefono de 8 digitos:", prov.telefono || "");
+    const telInput = window.prompt(
+      "Telefono de 8 digitos:",
+      prov.telefono || ""
+    );
     if (telInput === null) return;
     const telefono = telInput.trim();
     if (!telefono || telefono.length !== 8 || Number.isNaN(Number(telefono))) {
@@ -105,10 +108,7 @@ export default function ProveedoresPage() {
           className="product-modal-backdrop"
           onClick={() => setMostrarForm(false)}
         >
-          <div
-            className="product-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="product-modal" onClick={(e) => e.stopPropagation()}>
             <div className="product-modal-head">
               <h3 className="mb-0">Nuevo proveedor</h3>
               <button

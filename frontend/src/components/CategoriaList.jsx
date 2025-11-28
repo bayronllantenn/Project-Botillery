@@ -17,7 +17,6 @@ const CategoriaList = ({ categorias = [], onEdit, onDelete }) => {
     }
     return texto;
   }
-
   return (
     <div className="categoria-card">
       <input

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import "./css/auth.css";
+import "../styles/auth.css";
+import "../styles/global.css";
 
 export default function LoginPage(props) {
   const [username, setUsername] = useState("");

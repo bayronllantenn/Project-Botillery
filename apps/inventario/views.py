@@ -5,15 +5,21 @@ from django.shortcuts import get_object_or_404
 from .models import Categoria, Producto, Proveedor
 from .serializers import CategoriaSerializer, ProductoSerializer, ProveedorSerializer
 
+# utilizamos api view para poder ver esta funcion en el backend 
 @api_view(['GET', 'POST'])
 def producto_lista(request):
     if request.method == 'GET':
         productos = Producto.objects.all()
+        # serializamos productos la cual contiene todos los objetos dentro y mediante many le decimos que es una lista de objetos
+        # mediante data son los datos que el cliente envio al backend en el cuerpo de la peticion ej JSON 
+        # y con context es un diccionario que se le pasa al serializador para que este pueda entender la informacion contextualizada necesaria osea
+        # quien hace la peticion , rol , tambien proporciona la direccion del servidor o el metodo http utilizado osea en este caso un GET 
         serializer = ProductoSerializer(productos, many=True, context={'request': request})
         return Response(serializer.data)
     
     if request.method == 'POST':
         serializer = ProductoSerializer(data=request.data, context={'request': request})
+        # metodo de django el cual valida que todos los campos esten presentes , los datos sean correctos
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

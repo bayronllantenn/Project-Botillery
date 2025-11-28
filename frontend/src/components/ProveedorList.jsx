@@ -8,9 +8,9 @@ const ProveedorList = ({ proveedores = [], onEdit, onDelete }) => {
           <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Teléfono</th>
+            <th>Telofono</th>
             <th>Correo</th>
-            <th>Dirección</th>
+            <th>Direccion</th>
             <th>Acciones</th>
           </tr>
         </thead>

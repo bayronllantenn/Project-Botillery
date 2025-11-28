@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Usuario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="perfil")
     nombre = models.CharField(max_length=255)
-    # Usamos choices para limitar los roles permitidos
+    # Usamos choices para limitar los roles permitidos los cuales solo puedan ser estos 3 y por defecto sea vendedor
     class Roles(models.TextChoices):
         ADMIN = "admin", "Administrador"
         VENDEDOR = "vendedor", "Vendedor"

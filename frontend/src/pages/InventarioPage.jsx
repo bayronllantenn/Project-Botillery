@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import InventarioForm from "../components/InventarioForm";
 import InventarioList from "../components/InventarioList";
-import "./css/inventario.css";
+import "../styles/inventario.css";
 
 export default function InventarioPage() {
   const [productos, setProductos] = useState([]);

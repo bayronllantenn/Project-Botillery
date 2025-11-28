@@ -1,7 +1,7 @@
 body {
   margin: 0;
-  background-image: url("/img/negro-gris.jpg");
-  background-size: cover;
+  background-image: url("../../public/img/negro-gris.jpg");
+  background-size: cove;
   background-position: center;
   background-attachment: fixed;
   min-height: 100vh;

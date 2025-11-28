@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import "./css/productos.css";
+import "../styles/productos.css";
 import ProductosList from "../components/ProductosList";
 const fmt = new Intl.NumberFormat("es-CL");
 
@@ -14,7 +14,8 @@ export default function ProductosPage() {
     total_vendido: 0,
     productos_disponibles: 0,
   });
-
+  /* utilizamos asincronia para poder utilizar la palabra clave await , que nos permitira
+realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
   const loadAll = async () => {
     try {
       const prodsRes = await api.get("/inventario/productos/");
@@ -39,14 +40,18 @@ export default function ProductosPage() {
     loadResumen();
   }, []);
 
+  /* funcion vista vendedor para realizar una venta de un producto*/
   const abrirVenta = (p) => {
     setVenta({
+      /* si el producto existe y no es null , el ternario dice hay un producto entonces se muestra el id
+      si nada de la izquierda se cumple entonces muestra texto vacio */
       producto_id: p ? String(p.id) : "",
       cantidad: "",
     });
     setMostrarVenta(true);
   };
-
+  /* e seria el objeto que envio en el formulario , evito que se recargue la pagina , y pido id y cantidad con radix 10 para decimales
+ osea del 0-9*/
   const registrarVenta = async (e) => {
     e.preventDefault();
     const pid = parseInt(venta.producto_id, 10);

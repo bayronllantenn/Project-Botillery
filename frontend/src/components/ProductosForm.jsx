@@ -12,11 +12,17 @@ export default function ProductosForm({ cats, provs, onAdd }) {
     descripcion: "",
     imagen: null,
   });
-
+  /* utilizamos handleChange para manejar el formulario ,
+la e representa el evento en este caso cuando el usuario cambia algo en el formulario*/
   const handleChange = (e) => {
+    /* e.target es el input en este caso file para la subida de img
+    si la condicion es verdadera almacena la foto en files , tomamos el primer archivo osea 0 xd
+    y ese valor lo asigno hacia  la constante valor que esta abajjo*/
     const valor = e.target.type === "file" ? e.target.files[0] : e.target.value;
     setForm({
+      /* operador spread para obtener lo que el usuario escribio */
       ...form,
+      /* unbifica el formulario*/
       [e.target.name]: valor,
     });
   };
@@ -26,8 +32,8 @@ export default function ProductosForm({ cats, provs, onAdd }) {
 
     const datosAEnviar = {
       ...form,
-      precio: parseInt(form.precio),
-      stock: parseInt(form.stock),
+      precio: parseInt(form.precio, 10),
+      stock: parseInt(form.stock, 10),
     };
 
     onAdd(datosAEnviar);
@@ -123,7 +129,7 @@ export default function ProductosForm({ cats, provs, onAdd }) {
           type="number"
           name="precio"
           className="form-control"
-          placeholder="Precio "
+          placeholder="Precio"
           required
           min="1"
           value={form.precio}

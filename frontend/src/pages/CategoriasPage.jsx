@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import CategoriaForm from "../components/CategoriaForm";
 import CategoriaList from "../components/CategoriaList";
-import "../pages/css/categoria.css";
+import "../styles/categoria.css";
 
 export default function CategoriasPage() {
   const [categorias, setCategorias] = useState([]);
