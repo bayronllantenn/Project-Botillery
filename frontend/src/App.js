@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ProductosPage from "./pages/ProductosPage";
-import AdminProductosPage from "./pages/AdminProductosPage";
+import AdminInventarioPage from "./pages/AdminInventarioPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import "./App.css";
@@ -134,7 +134,7 @@ export default function App() {
         ) : (
           <>
             {view === "productos" &&
-              (isAdmin ? <AdminProductosPage /> : <ProductosPage />)}
+              (isAdmin ? <AdminInventarioPage /> : <ProductosPage />)}
           </>
         )}
       </div>

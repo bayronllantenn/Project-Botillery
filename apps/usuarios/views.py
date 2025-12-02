@@ -23,8 +23,8 @@ def register(request):
     serializer = RegisterSerializer(data=request.data)
     # verifica las reglas definidas en el serializer como longitud , etc
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        usuario = serializer.save()
+        return Response(UsuarioSerializer(usuario).data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["POST"])

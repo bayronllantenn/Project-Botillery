@@ -87,7 +87,7 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
         <div className="seller-cards">
           <div className="seller-card">
             <div className="seller-card-head">
-              <span>Mis Ventas</span>
+              <span>Cantidad Productos Vendidos</span>
             </div>
             <div className="seller-card-body">
               <span className="seller-number">{resumen.mis_ventas}</span>
@@ -95,7 +95,7 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
           </div>
           <div className="seller-card">
             <div className="seller-card-head">
-              <span>Total Vendido</span>
+              <span>Total Vendido $</span>
             </div>
             <div className="seller-card-body">
               <span className="seller-number">

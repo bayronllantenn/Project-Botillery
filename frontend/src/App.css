@@ -113,15 +113,30 @@
 }
 
 .btn-actions {
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   padding: 6px 10px;
   border: 1px solid #3f3f3f;
   background-color: #111;
   color: #fff;
   font-size: 1rem;
   cursor: pointer;
-  margin-right: 8px;
-  margin-bottom: 8px;
+  border-radius: 6px;
+}
+
+.inventario-table td:last-child {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.inventario-table td:nth-child(3) {
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .producto-card {

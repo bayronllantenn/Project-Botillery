@@ -102,20 +102,19 @@ export default function LoginPage(props) {
           </div>
 
           <button
-            class="btn btn-dark w-100 mt-2"
+            class="button"
             type="submit"
             disabled={loading}
           >
             {loading ? "Ingresando..." : "Entrar"}
           </button>
 
-          <button
-            class="btn btn-light w-100 mt-2"
-            type="button"
-            onClick={() => props.onGoRegister && props.onGoRegister()}
-          >
-            Registrarse
-          </button>
+          <p className="auth-registro">
+            ¿No tienes cuenta?{" "}
+            <span className="auth-link" onClick={() => props.onGoRegister?.()}>
+              Registrarse
+          </span>
+          </p>
         </form>
 
         {msg && <div class="alert alert-danger mt-3 error-rojo">{msg}</div>}

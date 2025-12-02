@@ -2,6 +2,41 @@ body.body-productos {
   background-color: #ffffff;
   background-image: none;
 }
+.inventario-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(3, 3, 3, 0.2);
+}
+
+.inventario-table thead th {
+  background: #000000;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  padding: 14px 18px;
+  text-align: left;
+}
+
+.inventario-table tbody td {
+  padding: 14px 18px;
+  font-size: 0.9rem;
+  color: #1f2937;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+}
+
+.inventario-table tbody tr:hover {
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.inventario-table tbody tr:last-child td {
+  border-bottom: none;
+}
 
 .album {
   background-color: black;
@@ -28,6 +63,10 @@ body.body-productos {
   color: #fff;
   border: 1px solid #444;
   padding: 10px 24px;
+}
+
+.btn-dark{
+  margin-bottom: 30px;
 }
 
 .btn-productos:hover {
@@ -72,4 +111,16 @@ body.body-productos {
 .overlay-modal-body {
   max-height: 70vh;
   overflow-y: auto;
+}
+
+
+.btn-productos {
+    padding: 17px 40px;
+  border-radius: 50px;
+  cursor: pointer;
+  border: 0;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-size: 15px;
+  transition: all 0.5s ease;
 }

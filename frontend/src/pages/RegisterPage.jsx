@@ -16,7 +16,7 @@ export default function RegisterPage({ onRegistered }) {
     e.preventDefault();
     setMsg("");
     if (!form.username.trim() || !form.password || !form.email.trim()) {
-      setMsg("Usuario, correo y contraseña son obligatorios");
+      setMsg("Error: Usuario, correo y contraseña son obligatorios");
       return;
     }
     if (form.password.length <= 8) {
@@ -31,7 +31,10 @@ export default function RegisterPage({ onRegistered }) {
         nombre: form.nombre.trim() || form.username.trim(),
         email: form.email.trim(),
       });
-      if (onRegistered) onRegistered();
+      setMsg("Registro exitoso")
+      setTimeout(() => onRegistered?.(), 1000);
+
+
     } catch (e) {
       setMsg("Error: " + JSON.stringify(unwrapError(e)));
     } finally {
@@ -139,22 +142,21 @@ export default function RegisterPage({ onRegistered }) {
             </div>
           </div>
           <button
-            class="btn btn-dark w-100 mt-2"
+            class="button"
             type="submit"
             disabled={loading}
           >
             {loading ? "Creando..." : "Crear cuenta"}
           </button>
-          <button
-            class="btn btn-light w-100 mt-2"
-            type="button"
-            onClick={() => (window.location.href = "/LoginPage.jsx")}
-          >
-            Volver
-          </button>
+          <p className="auth-registro">
+            ¿Ya tienes cuenta?{" "}
+            <span className="auth-link" onClick={() => (window.location.href = "/LoginPage.jsx")}>
+              Iniciar Sesion
+          </span>
+          </p>
         </form>
         {msg && (
-          <div className="alert alert-danger mt-3 error-rojo" role="alert">
+          <div className={msg.startsWith("Error") ? "error-rojo" : "alerta-verde"} role="alert">
             {msg}
           </div>
         )}
