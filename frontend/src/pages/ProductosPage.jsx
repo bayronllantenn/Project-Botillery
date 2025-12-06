@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import "../styles/productos.css";
 import ProductosList from "../components/ProductosList";
+/* Formateador de numeros a pesos chilenos */
 const fmt = new Intl.NumberFormat("es-CL");
 
 export default function ProductosPage() {
   const [productos, setProductos] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("todos");
   const [venta, setVenta] = useState({ producto_id: "", cantidad: "" });
   const [mostrarVenta, setMostrarVenta] = useState(false);
   const [productoActivo, setProductoActivo] = useState(null);
@@ -20,12 +23,20 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
     try {
       const prodsRes = await api.get("/inventario/productos/");
       setProductos(prodsRes.data);
+      const catsRes = await api.get("/inventario/categorias/");
+      setCategorias(catsRes.data);
     } catch (error) {
       setProductos([]);
       alert("No se pudieron cargar los productos");
     }
   };
-
+  const productosFiltrados =
+    categoriaSeleccionada === "todos"
+      ? productos
+      : productos.filter(
+          (p) => p.categoria_detalle?.id === categoriaSeleccionada
+        );
+        
   const loadResumen = async () => {
     try {
       const res = await api.get("/ventas/resumen/");
@@ -35,10 +46,7 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
     }
   };
 
-  useEffect(() => {
-    loadAll();
-    loadResumen();
-  }, []);
+  useEffect(() => { loadAll(); loadResumen();}, []);
 
   /* funcion vista vendedor para realizar una venta de un producto*/
   const abrirVenta = (p) => {
@@ -79,58 +87,86 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
 
   return (
     <main>
-      <section className="seller-hero">
-        <h1>Panel de Vendedor</h1>
-        <p className="text-body-secondary">
-          Registra ventas y consulta el inventario
-        </p>
-        <div className="seller-cards">
-          <div className="seller-card">
-            <div className="seller-card-head">
-              <span>Cantidad Productos Vendidos</span>
-            </div>
-            <div className="seller-card-body">
-              <span className="seller-number">{resumen.mis_ventas}</span>
-            </div>
-          </div>
-          <div className="seller-card">
-            <div className="seller-card-head">
-              <span>Total Vendido $</span>
-            </div>
-            <div className="seller-card-body">
-              <span className="seller-number">
-                ${fmt.format(resumen.total_vendido || 0)}
-              </span>
-            </div>
-          </div>
-          <div className="seller-card">
-            <div className="seller-card-head">
-              <span>Productos Disponibles</span>
-            </div>
-            <div className="seller-card-body">
-              <span className="seller-number">
-                {resumen.productos_disponibles}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="d-flex gap-2 flex-wrap mt-3">
-          <button
-            type="button"
-            className="btn-productos"
-            onClick={() => abrirVenta(null)}
-          >
-            Agregar venta
-          </button>
-        </div>
-      </section>
+      <div className="hero-wrapper">
+        <div className="hero-box">
+          <h1>Panel de Vendedor</h1>
+          <p className="text-body-secondary">
+            Registra ventas y consulta el inventario
+          </p>
 
+          <div className="seller-cards">
+            <div className="seller-card">
+              <div className="seller-card-head">
+                <span>Cantidad Productos Vendidos</span>
+              </div>
+              <div className="seller-card-body">
+                <span className="seller-number">{resumen.mis_ventas}</span>
+              </div>
+            </div>
+
+            <div className="seller-card">
+              <div className="seller-card-head">
+                <span>Total Vendido $</span>
+              </div>
+              <div className="seller-card-body">
+                <span className="seller-number">
+                  ${fmt.format(Number(resumen.total_vendido || 0))}
+                </span>
+              </div>
+            </div>
+
+            <div className="seller-card">
+              <div className="seller-card-head">
+                <span>Productos Disponibles</span>
+              </div>
+              <div className="seller-card-body">
+                <span className="seller-number">
+                  {resumen.productos_disponibles}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="d-flex justify-content-center gap-2 flex-wrap mt-3">
+            <button
+              type="button"
+              className="btn-productos"
+              onClick={() => abrirVenta(null)}
+            >
+              Agregar venta
+            </button>
+          </div>
+        </div>
+
+        <div className="hero-gap"></div>
+      </div>
+      <div className="vendedor-tab bfiltro">
+        <button
+          type="button"
+          className={`botones-filtro ${
+            categoriaSeleccionada === "todos" ? "active" : ""
+          }`}
+          onClick={() => setCategoriaSeleccionada("todos")}
+        >
+          Todos
+        </button>
+        {categorias.map((c) => (
+          <button
+            key={c.id}
+            className={`botones-filtro ${
+              categoriaSeleccionada === c.id ? "active" : ""
+            }`}
+            onClick={() => setCategoriaSeleccionada(c.id)}
+          >
+            {c.nombre}
+          </button>
+        ))}
+      </div>
       <section className="album bg-body">
         <div className="container">
-          <ProductosList productos={productos} onVer={verProducto} />
+          <ProductosList productos={productosFiltrados} onVer={verProducto} />
         </div>
       </section>
-
       {mostrarVenta && (
         <div className="overlay-productos">
           <div
@@ -205,7 +241,7 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
                   src={productoActivo.imagen}
                   alt={productoActivo.nombre}
                   className="img-fluid mb-3"
-                  style={{ maxHeight: 260, objectFit: "cover", width: "100%" }}
+                  style={{ maxHeight: 1000, width: "100%" }}
                 />
               )}
               <p>
@@ -217,7 +253,8 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
               </p>
 
               <p>
-                <strong>Precio:</strong> ${fmt.format(productoActivo.precio)}
+                <strong>Precio:</strong> $
+                {fmt.format(Number(productoActivo.precio))}
               </p>
               <p>
                 <strong>Descripción:</strong>{" "}

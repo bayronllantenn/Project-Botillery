@@ -86,7 +86,7 @@ export default function ProveedoresPage() {
             <h3 className="mb-0">Proveedores</h3>
             <button
               type="button"
-              className="btn btn-dark rounded-pill px-4"
+              className="btn btn-dark"
               onClick={() => setMostrarForm(true)}
             >
               Nuevo proveedor

@@ -2,7 +2,7 @@ const ProveedorList = ({ proveedores = [], onEdit, onDelete }) => {
   const data = Array.isArray(proveedores) ? proveedores : [];
 
   return (
-    <div className="proveedor-wrapper">
+    <div>
       <table className="proveedor-table">
         <thead>
           <tr>
@@ -22,7 +22,7 @@ const ProveedorList = ({ proveedores = [], onEdit, onDelete }) => {
               <td>{p.telefono || "-"}</td>
               <td>{p.correo || "-"}</td>
               <td>{p.direccion || "-"}</td>
-              <td>
+              <td className="proveedor-acciones">
                 <button
                   className="btn-actions"
                   onClick={() => onEdit && onEdit(p)}

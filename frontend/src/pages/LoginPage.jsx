@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import { useNavigate } from "react-router-dom";
 import "../styles/auth.css";
-import "../styles/global.css";
 
 export default function LoginPage(props) {
   const [username, setUsername] = useState("");
@@ -9,13 +9,7 @@ export default function LoginPage(props) {
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    document.body.classList.add("auth-page");
-    return () => {
-      document.body.classList.remove("auth-page");
-    };
-  }, []);
-
+  const navigate = useNavigate();
   const submit = async (e) => {
     e.preventDefault();
     setMsg("");
@@ -34,11 +28,12 @@ export default function LoginPage(props) {
       });
 
       const data = res.data;
-      localStorage.setItem("user", JSON.stringify(data));
 
       if (props.onLoggedIn) {
         props.onLoggedIn(data);
       }
+
+      navigate("/productos", { replace: true });
     } catch (err) {
       setMsg("Error: Credenciales Invalidas");
     } finally {
@@ -47,6 +42,7 @@ export default function LoginPage(props) {
   };
 
   return (
+    <div className="auth-background">
     <div className="auth-wrap">
       <div className="auth-logo">
         <img src="/img/logo.png" alt="Logo" className="auth-logo-img" />
@@ -54,7 +50,7 @@ export default function LoginPage(props) {
       <div className="auth-card">
         <h3 className="text-center mb-3">Bienvenido</h3>
         <p className="text-center text-secondary">
-          Ingresa con tu cuenta o registrate
+          Ingresa con tu cuenta o regístrate
         </p>
 
         <form onSubmit={submit}>
@@ -101,24 +97,21 @@ export default function LoginPage(props) {
             </svg>
           </div>
 
-          <button
-            class="button"
-            type="submit"
-            disabled={loading}
-          >
+          <button class="button" type="submit" disabled={loading}>
             {loading ? "Ingresando..." : "Entrar"}
           </button>
 
           <p className="auth-registro">
             ¿No tienes cuenta?{" "}
-            <span className="auth-link" onClick={() => props.onGoRegister?.()}>
+            <span className="auth-link" onClick={() => navigate("/register")}>
               Registrarse
-          </span>
+            </span>
           </p>
         </form>
 
         {msg && <div class="alert alert-danger mt-3 error-rojo">{msg}</div>}
       </div>
+    </div>
     </div>
   );
 }

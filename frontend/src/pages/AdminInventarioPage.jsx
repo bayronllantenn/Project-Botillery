@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import CategoriasPage from "./CategoriasPage";
 import ProveedoresPage from "./ProveedoresPage";
-import AdminInventarioForm from "../components/AdminInventarioForm"
+import AdminInventarioForm from "../components/AdminInventarioForm";
 import AdminInventarioList from "../components/AdminInventarioList";
+import "../styles/inventario.css";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminInventarioPage() {
+  const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [proveedores, setProveedores] = useState([]);
@@ -24,7 +27,6 @@ export default function AdminInventarioPage() {
       alert("No se pudieron cargar los productos");
     }
   };
-
   const loadCategorias = async () => {
     try {
       const res = await api.get("/inventario/categorias/");
@@ -33,7 +35,6 @@ export default function AdminInventarioPage() {
       setCategorias([]);
     }
   };
-
   const loadProveedores = async () => {
     try {
       const res = await api.get("/inventario/proveedores/");
@@ -42,7 +43,7 @@ export default function AdminInventarioPage() {
       setProveedores([]);
     }
   };
-
+  
   const addProducto = async ({
     categoria,
     proveedor,
@@ -100,36 +101,38 @@ export default function AdminInventarioPage() {
       console.error(error?.response?.data || error);
     }
   };
-  
+
   const ajustar = async (producto) => {
     if (!producto) {
-      alert("Selecciona un producto")
+      alert("Selecciona un producto");
       return;
     }
-    
-    const nuevoStock = window.prompt("Nuevo stock:",
-      Number(producto.stock ?? 0));
-      if (nuevoStock=== null ) return;
 
-      const stockValidar = Number(nuevoStock);
-      if (!Number.isInteger(stockValidar) || stockValidar < 0) {
-        alert("Selecciona un stock valido (0 o mas)")
-        return;
-      }
-      
-      const diferencia = stockValidar - Number(producto.stock ?? 0);
-      try {
+    const nuevoStock = window.prompt(
+      "Nuevo stock:",
+      Number(producto.stock ?? 0)
+    );
+    if (nuevoStock === null) return;
+
+    const stockValidar = Number(nuevoStock);
+    if (!Number.isInteger(stockValidar) || stockValidar < 0) {
+      alert("Selecciona un stock valido (0 o mas)");
+      return;
+    }
+
+    const diferencia = stockValidar - Number(producto.stock ?? 0);
+    try {
       await api.post("inventario/productos/ajustar_stock/", {
-        producto_id:producto.id,
+        producto_id: producto.id,
         cantidad: diferencia,
       });
       await loadProductos();
-    } catch(e) {
-        const msg = (e?.reponse?.data && JSON.stringify(e.response.data)) || e.message;
-          alert("Error: " + msg);
-      }
+    } catch (e) {
+      const msg =
+        (e?.reponse?.data && JSON.stringify(e.response.data)) || e.message;
+      alert("Error: " + msg);
+    }
   };
-
 
   const eliminarProducto = async (id) => {
     const ok = window.confirm("¿Seguro que deseas eliminar este producto?");
@@ -161,11 +164,15 @@ export default function AdminInventarioPage() {
   return (
     <>
       <main className={blurActivo ? "admin-blur" : ""}>
-        <section className="py-4">
+        <div className="hero">
           <h1>Panel de Administracion</h1>
           <p className="text-body-secondary">
             Gestiona productos, ventas e inventario
           </p>
+
+          <button onClick={() => navigate("/admin/usuarios")}>
+            Usuarios
+          </button>
 
           <div className="admin-tabs">
             <button
@@ -190,14 +197,16 @@ export default function AdminInventarioPage() {
               Proveedores
             </button>
           </div>
+        </div>
 
+        <section className="py-3">
           {tab === "productos" && (
-            <section className="py-3">
-              <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
-                <h3 className="mb-0">Productos</h3>
+            <>
+              <div className="productos-header">
+                <h3>Productos</h3>
                 <button
                   type="button"
-                  className="btn btn-dark"
+                  className="btn btn-dark botonaso"
                   onClick={() => setMostrarForm(true)}
                 >
                   Agregar producto
@@ -205,9 +214,7 @@ export default function AdminInventarioPage() {
               </div>
 
               <div className="mt-3">
-                <AdminInventarioForm
-                  productos={productos}
-                />
+                <AdminInventarioForm productos={productos} />
               </div>
 
               <AdminInventarioList
@@ -216,7 +223,7 @@ export default function AdminInventarioPage() {
                 onEliminar={eliminarProducto}
                 onAjustar={ajustar}
               />
-            </section>
+            </>
           )}
 
           {tab === "categorias" && <CategoriasPage />}

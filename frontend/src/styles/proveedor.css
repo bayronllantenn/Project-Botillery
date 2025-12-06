@@ -1,3 +1,5 @@
+@import url("./inventario.css");
+
 .card-form {
   display: flex;
   gap: 8px;
@@ -8,4 +10,45 @@
 .card-form select,
 .card-form textarea {
   min-width: 160px;
+}
+.proveedor-table {
+  width: 100%;
+  gap: 8px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.proveedor-table thead th {
+  background: #000000;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  padding: 14px 18px;
+  text-align: left;
+}
+
+.proveedor-table tbody td {
+  padding: 14px 18px;
+  font-size: 0.9rem;
+  color: #1f2937;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+}
+
+.proveedor-table tbody tr:hover {
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.proveedor-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.proveedor-acciones {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
 }

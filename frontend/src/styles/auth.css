@@ -1,4 +1,26 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+.auth-background {
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.12) 0%,
+      rgba(0, 0, 0, 0.2) 40%,
+      rgba(0, 0, 0, 0.32) 100%
+    ),
+    url("../../../media/background/carbon-lena-madera-negra-piso-madera-pino-japones-fondo_43300-2823.avif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  min-height: 100vh;
+  font-family: "Roboto", sans-serif;
+}
 
 .auth-wrap {
   position: relative;
@@ -10,15 +32,13 @@
   height: 100vh;
   overflow: hidden;
   padding: 28px 16px;
-  font-family: "Inter", sans-serif;
+  font-family: "roboto";
 }
-body.auth-page {
-  overflow: hidden;
-}
+
 
 .auth-logo {
   position: fixed;
-  top: 24px;
+  top: 40px;
   width: 240px;
   display: flex;
   justify-content: center;
@@ -33,10 +53,10 @@ body.auth-page {
 .auth-card {
   width: 100%;
   max-width: 420px;
-  margin-top: 140px;
+  margin-top: 120px;
   background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  border-radius: 18px;
+  box-shadow:0 10px 30px rgba(0, 0, 0, 0.35),0 0 20px rgba(255, 255, 255, 0.03); 
   padding: 32px 20px 28px;
 }
 
@@ -82,12 +102,14 @@ body.auth-page {
   padding: 12px 14px;
 }
 .auth-link {
-  color: #111;
-  font-weight: 600;
+  color: #444444;
+  font-weight: normal;
   cursor: pointer;
+  text-decoration: none;
 }
 .auth-link:hover {
   text-decoration: underline;
+  color: #000000;
 }
 .auth-registro {
   text-align: center;

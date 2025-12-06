@@ -82,10 +82,10 @@ export default function CategoriasPage() {
       <main className={blurActivo ? "admin-blur" : ""}>
         <section className="py-3">
           <div className="d-flex flex-wrap align-items-center justify-content-between gap-3">
-            <h3 className="mb-0">Categorías</h3>
+            <h3>Categorías</h3>
             <button
               type="button"
-              className="btn btn-dark"
+              className="btn btn-dark categoria-botonaso"
               onClick={() => {
                 setMostrarForm(true);
               }}
