@@ -9,7 +9,7 @@ class Usuario(models.Model):
     class Roles(models.TextChoices):
         ADMIN = "admin", "Administrador"
         VENDEDOR = "vendedor", "Vendedor"
-        BODEGUERO = "bodeguero","Bodeguero"
+        CAJERO = "cajero" , "Cajero"
 
 
     rol = models.CharField(

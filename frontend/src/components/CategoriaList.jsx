@@ -27,7 +27,7 @@ const CategoriaList = ({ categorias = [], onEdit, onDelete }) => {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      <table className="categoria-table">
+      <table className="inventario-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -93,7 +93,6 @@ const CategoriaList = ({ categorias = [], onEdit, onDelete }) => {
                     <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
                     <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                   </svg>
-                 
                 </button>
               </td>
             </tr>

@@ -1,58 +1,53 @@
 body.body-inventario {
   background-color: #ffffff;
   background-image: none;
-
 }
 
 .hero {
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  margin-top: 0;
-  margin-bottom: 0;
-  width: 100vw;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   text-align: center;
-  padding: 60px 20px;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 32px 16px 20px;
   border-bottom: 1px solid #e2e2e2;
 }
 
 .hero h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 800;
   color: #000;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
 }
 
 .hero .text-body-secondary {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   color: #6b7280;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 
 .admin-tabs {
   display: flex;
-  gap: 12px;
-  margin-top: 24px;
-  margin-bottom: 0;
   flex-wrap: wrap;
+  gap: 8px;
   justify-content: center;
+  margin-top: 12px;
 }
 
 .admin-tab {
-  border: none;
   border-radius: 999px;
-  padding: 8px 18px;
-  background-color: #f2f2f2;
+  border: 1px solid transparent;
+  padding: 6px 18px;
+  background: #f3f4f6;
+  color: #111827;
+  font-size: 14px;
   cursor: pointer;
-  font-size: 0.95rem;
-  transition: background-color 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
 }
 
 .admin-tab.active {
-  background-color: #000;
+  background: #000;
   color: #fff;
 }
 
@@ -68,12 +63,14 @@ body.body-inventario {
   cursor: pointer;
   border-radius: 6px;
 }
-.botonaso {
-  position: absolute;
-  padding: 8px;
-  right: 62.5%;
-  margin-top: 0.5%;
-  z-index: 10;
+
+.productos-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .inventario-search {
@@ -107,23 +104,13 @@ body.body-inventario {
 .inventario-table tbody td {
   padding: 14px 18px;
   font-size: 0.9rem;
-  color: #1f2937;
+  font-weight: 450;
+  color: #000000;
   border-bottom: 1px solid rgba(226, 232, 240, 0.7);
 }
 
 .inventario-table tbody tr:hover {
-  background: rgba(99, 102, 241, 0.08);
-}
-
-.inventario-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.inventario-table td:last-child {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
+  background: rgba(2, 2, 2, 0.08);
 }
 
 .inventario-table td:nth-child(3) {
@@ -133,10 +120,20 @@ body.body-inventario {
   text-overflow: ellipsis;
 }
 
+.stock-minimo {
+  background-color: rgb(226, 82, 15);
+}
+
 .admin-blur {
   filter: blur(3px);
   pointer-events: none;
   user-select: none;
+}
+.botones-acciones {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
 }
 
 .product-modal-backdrop {
@@ -175,4 +172,54 @@ body.body-inventario {
   line-height: 1;
   color: #111;
   cursor: pointer;
+}
+
+@media (max-width: 576px) {
+  .hero {
+    padding: 20px 1rem 12px;
+  }
+
+  .hero h1 {
+    font-size: 1.6rem;
+  }
+
+  .admin-tabs {
+    justify-content: space-between;
+  }
+
+  .admin-tab {
+    flex: 1 1 calc(50% - 8px);
+    text-align: center;
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .productos-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .productos-header .btn {
+    width: 100%;
+  }
+}
+.inventario-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.inventario-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+@media (max-width: 576px) {
+  .inventario-table {
+    min-width: 900px;
+  }
 }

@@ -1,13 +1,14 @@
-import "../styles/gestionusuarios.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import GestionarUsuariosList from "../components/GestionarUsuariosList";
 import api from "../services/api";
 
 export default function GestionarUsuariosPage() {
-const navigate = useNavigate();
-const [usuarios, setUsuarios] = useState([]);
+  const navigate = useNavigate();
+  const [usuarios, setUsuarios] = useState([]);
+  const [cargando, setCargando] = useState(true);
 
-const loadUsuarios = async () => {
+  const loadUsuarios = async () => {
     try {
       /* espera que la api devuelta la respuesta*/
       const res = await api.get("/usuarios/");
@@ -15,41 +16,34 @@ const loadUsuarios = async () => {
     } catch (error) {
       setUsuarios([]);
       alert("No se pudieron cargar los usuarios");
+    } finally {
+      setCargando(false);
     }
   };
 
-useEffect(() => {
+  useEffect(() => {
     loadUsuarios();
   }, []);
 
-    return (
-    <div className="gestion-usuarios-page">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Usuario</th>
-                    <th>Rol</th>
-                    <th>Correo</th>
-                    <th>Acciones</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
+  const handleEditar = (usuario) => {
+    alert("Editar " + usuario.username);
+  };
 
-                {usuarios.map((u) => (
-                    <tr key={u.id}>
-                        <td>{u.id}</td>
-                        <td>{u.username}</td>
-                        <td>{u.rol}</td>
-                        <td>{u.correo}</td>
-                        <td>
-                            <button onClick={() => alert('Editar ' + u.username)}>Editar</button>
-                            <button onClick={() => alert('Eliminar ' + u.username)}>Eliminar</button>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+  const handleEliminar = (usuario) => {
+    alert("Eliminar " + usuario.username);
+  };
+
+  if (cargando) {
+    return <div>Cargando...</div>;
+  }
+  return (
+    <div>
+      <h2>Gestion de Usuarios</h2>
+      <GestionarUsuariosList
+        usuarios={usuarios}
+        onEditar={handleEditar}
+        onEliminar={handleEliminar}
+      />
     </div>
-); }
+  );
+}

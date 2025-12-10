@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Categoria, Producto, Proveedor, Compra, DetalleCompra
+from .models import Categoria, Producto, Proveedor
 
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,18 +28,8 @@ class ProductoSerializer(serializers.ModelSerializer):
             "formato_venta",
             "precio",
             "stock",
+            "stock_minimo",
             "costo",
             "categoria_detalle",
             "proveedor_detalle",
         ]
-
-class DetalleCompraSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DetalleCompra
-        fields = ["id", "compra", "producto", "cantidad", "precio_unitario"]
-
-class CompraSerializer(serializers.ModelSerializer):
-    detalles = DetalleCompraSerializer(many=True, read_only=True)
-    class Meta:
-        model = Compra
-        fields = ["id", "proveedor", "fecha_hora", "total", "detalles"]

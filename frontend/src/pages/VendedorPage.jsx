@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import "../styles/productos.css";
-import ProductosList from "../components/ProductosList";
-/* Formateador de numeros a pesos chilenos */
+import "../styles/vendedor.css";
+import VendedorList from "../components/VendedorList";
+
 const fmt = new Intl.NumberFormat("es-CL");
 
-export default function ProductosPage() {
+export default function VendedorPage() {
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("todos");
@@ -17,8 +17,7 @@ export default function ProductosPage() {
     total_vendido: 0,
     productos_disponibles: 0,
   });
-  /* utilizamos asincronia para poder utilizar la palabra clave await , que nos permitira
-realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
+
   const loadAll = async () => {
     try {
       const prodsRes = await api.get("/inventario/productos/");
@@ -30,49 +29,67 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
       alert("No se pudieron cargar los productos");
     }
   };
+
   const productosFiltrados =
     categoriaSeleccionada === "todos"
       ? productos
       : productos.filter(
           (p) => p.categoria_detalle?.id === categoriaSeleccionada
         );
-        
+
   const loadResumen = async () => {
     try {
       const res = await api.get("/ventas/resumen/");
       setResumen(res.data);
     } catch {
-      setResumen({ mis_ventas: 0, total_vendido: 0, productos_disponibles: 0 });
+      setResumen({
+        mis_ventas: 0,
+        total_vendido: 0,
+        productos_disponibles: 0,
+      });
     }
   };
 
-  useEffect(() => { loadAll(); loadResumen();}, []);
+  useEffect(() => {
+    loadAll();
+    loadResumen();
+  }, []);
 
-  /* funcion vista vendedor para realizar una venta de un producto*/
   const abrirVenta = (p) => {
     setVenta({
-      /* si el producto existe y no es null , el ternario dice hay un producto entonces se muestra el id
-      si nada de la izquierda se cumple entonces muestra texto vacio */
       producto_id: p ? String(p.id) : "",
       cantidad: "",
     });
     setMostrarVenta(true);
   };
-  /* e seria el objeto que envio en el formulario , evito que se recargue la pagina , y pido id y cantidad con radix 10 para decimales
- osea del 0-9*/
+
   const registrarVenta = async (e) => {
     e.preventDefault();
     const pid = parseInt(venta.producto_id, 10);
     const cant = parseInt(venta.cantidad, 10);
+
     if (!pid || !Number.isInteger(cant) || cant <= 0) {
       alert("Selecciona un producto y una cantidad mayor a 0");
       return;
     }
+
+    const productoSeleccionado = productos.find((p) => p.id === pid);
+    if (!productoSeleccionado) {
+      alert("Producto no encontrado");
+      return;
+    }
+
     try {
-      await api.post("/inventario/productos/ajustar_stock/", {
-        producto_id: pid,
-        cantidad: -cant,
+      await api.post("/ventas/crear/", {
+        detalles: [
+          {
+            producto_id: pid,
+            cantidad: cant,
+            precio_unitario: productoSeleccionado.precio,
+          },
+        ],
       });
+
       setMostrarVenta(false);
       setVenta({ producto_id: "", cantidad: "" });
       await loadAll();
@@ -81,7 +98,6 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
       alert("No se pudo registrar la venta");
     }
   };
-
   const verProducto = (p) => setProductoActivo(p);
   const cerrarDetalle = () => setProductoActivo(null);
 
@@ -94,10 +110,10 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
             Registra ventas y consulta el inventario
           </p>
 
-          <div className="seller-cards">
+          <div className="seller-cards d-flex flex-column flex-md-row gap-3">
             <div className="seller-card">
               <div className="seller-card-head">
-                <span>Cantidad Productos Vendidos</span>
+                <span>Venta de hoy</span>
               </div>
               <div className="seller-card-body">
                 <span className="seller-number">{resumen.mis_ventas}</span>
@@ -106,7 +122,7 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
 
             <div className="seller-card">
               <div className="seller-card-head">
-                <span>Total Vendido $</span>
+                <span>Total vendido hoy</span>
               </div>
               <div className="seller-card-body">
                 <span className="seller-number">
@@ -117,7 +133,7 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
 
             <div className="seller-card">
               <div className="seller-card-head">
-                <span>Productos Disponibles</span>
+                <span>Productos en stock</span>
               </div>
               <div className="seller-card-body">
                 <span className="seller-number">
@@ -140,33 +156,38 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
 
         <div className="hero-gap"></div>
       </div>
-      <div className="vendedor-tab bfiltro">
-        <button
-          type="button"
-          className={`botones-filtro ${
-            categoriaSeleccionada === "todos" ? "active" : ""
-          }`}
-          onClick={() => setCategoriaSeleccionada("todos")}
-        >
-          Todos
-        </button>
-        {categorias.map((c) => (
+
+      <div className="vendedor-tab bfiltro overflow-auto">
+        <div className="d-inline-flex gap-2">
           <button
-            key={c.id}
+            type="button"
             className={`botones-filtro ${
-              categoriaSeleccionada === c.id ? "active" : ""
+              categoriaSeleccionada === "todos" ? "active" : ""
             }`}
-            onClick={() => setCategoriaSeleccionada(c.id)}
+            onClick={() => setCategoriaSeleccionada("todos")}
           >
-            {c.nombre}
+            Todos
           </button>
-        ))}
+          {categorias.map((c) => (
+            <button
+              key={c.id}
+              className={`botones-filtro ${
+                categoriaSeleccionada === c.id ? "active" : ""
+              }`}
+              onClick={() => setCategoriaSeleccionada(c.id)}
+            >
+              {c.nombre}
+            </button>
+          ))}
+        </div>
       </div>
+
       <section className="album bg-body">
         <div className="container">
-          <ProductosList productos={productosFiltrados} onVer={verProducto} />
+          <VendedorList productos={productosFiltrados} onVer={verProducto} />
         </div>
       </section>
+
       {mostrarVenta && (
         <div className="overlay-productos">
           <div
@@ -251,7 +272,6 @@ realizar operaciones que tarden tiempo de forma mas limpia y en 2do tiempo*/
                 <strong>Formato:</strong>{" "}
                 {productoActivo.formato_venta || "Sin formato"}
               </p>
-
               <p>
                 <strong>Precio:</strong> $
                 {fmt.format(Number(productoActivo.precio))}

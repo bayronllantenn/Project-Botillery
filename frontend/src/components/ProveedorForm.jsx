@@ -70,7 +70,7 @@ const ProveedorForm = ({ onAdd }) => {
         />
       </div>
       <div className="col-12">
-        <button type="submit" className="btn btn-dark w-100">
+        <button type="submit" className="btn btn-dark botonaso">
           Agregar
         </button>
       </div>
@@ -79,4 +79,3 @@ const ProveedorForm = ({ onAdd }) => {
 };
 
 export default ProveedorForm;
-

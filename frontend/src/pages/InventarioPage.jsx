@@ -2,24 +2,21 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import CategoriasPage from "./CategoriasPage";
 import ProveedoresPage from "./ProveedoresPage";
-import AdminInventarioForm from "../components/AdminInventarioForm";
-import AdminInventarioList from "../components/AdminInventarioList";
+import InventarioForm from "../components/InventarioForm";
+import InventarioList from "../components/InventarioList";
 import "../styles/inventario.css";
 import { useNavigate } from "react-router-dom";
 
-export default function AdminInventarioPage() {
+export default function InventarioPage() {
   const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [proveedores, setProveedores] = useState([]);
-  /* para las subpestañas de la pag la cual por defecto sera los productos*/
   const [tab, setTab] = useState("productos");
   const [mostrarForm, setMostrarForm] = useState(false);
 
-  /* funcion para cargar los productos en 2do tiempo*/
   const loadProductos = async () => {
     try {
-      /* espera que la api devuelta la respuesta*/
       const res = await api.get("/inventario/productos/");
       setProductos(res.data);
     } catch (error) {
@@ -27,6 +24,7 @@ export default function AdminInventarioPage() {
       alert("No se pudieron cargar los productos");
     }
   };
+
   const loadCategorias = async () => {
     try {
       const res = await api.get("/inventario/categorias/");
@@ -35,6 +33,7 @@ export default function AdminInventarioPage() {
       setCategorias([]);
     }
   };
+
   const loadProveedores = async () => {
     try {
       const res = await api.get("/inventario/proveedores/");
@@ -43,7 +42,7 @@ export default function AdminInventarioPage() {
       setProveedores([]);
     }
   };
-  
+
   const addProducto = async ({
     categoria,
     proveedor,
@@ -51,6 +50,8 @@ export default function AdminInventarioPage() {
     formato_venta,
     precio,
     stock,
+    stock_minimo,
+    costo,
     descripcion,
     codigo_barra,
     imagen,
@@ -65,6 +66,8 @@ export default function AdminInventarioPage() {
       formData.append("formato_venta", formato_venta);
       formData.append("precio", precio);
       formData.append("stock", stock ?? 0);
+      formData.append("stock_minimo", stock_minimo ?? 0);
+      formData.append("costo", costo ?? 0);
       formData.append("descripcion", descripcion || "");
       formData.append("codigo_barra", codigo_barra || "");
       if (imagen) {
@@ -170,11 +173,14 @@ export default function AdminInventarioPage() {
             Gestiona productos, ventas e inventario
           </p>
 
-          <button onClick={() => navigate("/admin/usuarios")}>
-            Usuarios
-          </button>
-
           <div className="admin-tabs">
+            <button
+              type="button"
+              className="admin-tab"
+              onClick={() => navigate("/admin/usuarios")}
+            >
+              Usuarios
+            </button>
             <button
               type="button"
               className={`admin-tab ${tab === "productos" ? "active" : ""}`}
@@ -199,7 +205,7 @@ export default function AdminInventarioPage() {
           </div>
         </div>
 
-        <section className="py-3">
+        <section className="py-2">
           {tab === "productos" && (
             <>
               <div className="productos-header">
@@ -214,15 +220,13 @@ export default function AdminInventarioPage() {
               </div>
 
               <div className="mt-3">
-                <AdminInventarioForm productos={productos} />
+                <InventarioList
+                  productos={productos}
+                  onEditar={editarProducto}
+                  onEliminar={eliminarProducto}
+                  onAjustar={ajustar}
+                />
               </div>
-
-              <AdminInventarioList
-                productos={productos}
-                onEditar={editarProducto}
-                onEliminar={eliminarProducto}
-                onAjustar={ajustar}
-              />
             </>
           )}
 
@@ -231,7 +235,7 @@ export default function AdminInventarioPage() {
         </section>
       </main>
 
-      <AdminInventarioForm
+      <InventarioForm
         visible={tab === "productos" && mostrarForm}
         categorias={categorias}
         proveedores={proveedores}

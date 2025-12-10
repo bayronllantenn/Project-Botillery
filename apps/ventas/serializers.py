@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.db import transaction
-from .models import Venta, DetalleVenta
+from .models import Transaccion, DetalleTransaccion
 from apps.inventario.models import Producto
 
 class DetalleInputSerializer(serializers.Serializer):
@@ -15,9 +15,9 @@ class VentaCreateSerializer(serializers.Serializer):
 # transaction atomic nos sirve si hay un error en cualquier paso ej al descontar stock después de una venta todo el proceso se cancela
     @transaction.atomic
     def create(self, validated_data):
-        # Creo el registro Venta que va a agrupar todos los detalles
+        # Creo el registro Transaccion que va a agrupar todos los detalles
         detalles_data = validated_data["detalles"]
-        venta = Venta.objects.create()
+        venta = Transaccion.objects.create(tipo='V')
 
         # Recorro cada item
         for item in detalles_data:
@@ -36,8 +36,8 @@ class VentaCreateSerializer(serializers.Serializer):
                 raise serializers.ValidationError({"error": f"Stock insuficiente para {prod.nombre}"})
 
             # Guardo el detalle de la venta
-            DetalleVenta.objects.create(
-                venta=venta,
+            DetalleTransaccion.objects.create(
+                transaccion=venta,
                 producto=prod,
                 cantidad=cant,
                 precio_unitario=precio,
@@ -47,14 +47,19 @@ class VentaCreateSerializer(serializers.Serializer):
             prod.stock -= cant
             prod.save()
 
+        # Calculo y guardo el total
+        total = sum(item["cantidad"] * item["precio_unitario"] for item in detalles_data)
+        venta.total = total
+        venta.save()
         return venta
+
 
 class DetalleVentaSerializer(serializers.ModelSerializer):
     # defino la ruta para acceder al objeto 
     nombre_producto = serializers.ReadOnlyField(source="producto.nombre")
 
     class Meta:
-        model = DetalleVenta
+        model = DetalleTransaccion
         fields = ["producto_id", "nombre_producto", "cantidad", "precio_unitario"]
 
 class VentaListSerializer(serializers.ModelSerializer):
@@ -65,7 +70,7 @@ class VentaListSerializer(serializers.ModelSerializer):
 
 # defino que datos va a mostrar 
     class Meta:
-        model = Venta
+        model = Transaccion
         fields = ["id", "fecha_hora", "total", "detalles"]
 # obtengo el total del precio 
     def get_total(self, obj):
