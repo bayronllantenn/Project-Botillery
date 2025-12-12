@@ -5,56 +5,95 @@ from django.contrib.auth import authenticate
 from .models import Usuario
 from .serializers import UsuarioSerializer, RegisterSerializer
 
+
 @api_view(["GET"])
 # permite obtener una lista de todos los perfiles de usuario
 def usuarios(request):
-    #consulta a la base de datos
+    # consulta a la base de datos
     users = Usuario.objects.all()
-    # convierte los objetos de la BD osea Python en datos serializables JSON
-    #                                      many true indica que estamos serializando una lista de objetos 
+    # convierte los objetos de la bd en datos serializables json
+    # many=true indica que se esta serializando una lista de objetos
     serializer = UsuarioSerializer(users, many=True)
-    # retorna los datos serializados JSON con un codigo 200 Ok por defecto 
+    # retorna los datos serializados json con un codigo 200 ok por defecto
     return Response(serializer.data)
+
 
 @api_view(["POST"])
 def register(request):
     # maneja la creacion de un nuevo usuario en el sistema
-    # serializer = crea una instancia del serializaer inyectando los datos en el data como pueden ser username , password .. etc
+    # crea una instancia del serializer con los datos recibidos
     serializer = RegisterSerializer(data=request.data)
-    # verifica las reglas definidas en el serializer como longitud , etc
+    # verifica las reglas definidas en el serializer como longitud formato y unicidad
     if serializer.is_valid():
         usuario = serializer.save()
         return Response(UsuarioSerializer(usuario).data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(["POST"])
 def login_view(request):
-    #  verifica las credenciales de un usuario para iniciar sesion solo acepta peticiones post
-    # obtengo los datos username , passworrd 
+    # verifica las credenciales de un usuario para iniciar sesion solo acepta peticiones post
+    # obtiene los datos username y password desde el body
     username = request.data.get("username")
     password = request.data.get("password")
 
-#   llamo a la funcion de django para autenticar si el usuario contraseña coinciden 
-# retorna un objeto User si es exitoso , o none si falla 
+    # llama a la funcion de django para autenticar si coinciden usuario y contrasena
+    # retorna un objeto user si es exitoso o none si falla
     user = authenticate(username=username, password=password)
-# logica post autenticacion : se ejecuta solo si la autenticacion fue exitosa 
+
+    # logica posterior a la autenticacion se ejecuta solo si la autenticacion fue exitosa
     if user is not None:
         try:
-            # itnento obtener el perfil (usuario) asociado a user autenticado 
+            # intenta obtener el perfil usuario asociado al user autenticado
             perfil = Usuario.objects.get(user=user)
         except Usuario.DoesNotExist:
-            # manejo de inconsistencia si el user existe pero el perfil de usuario no se crea
+            # maneja la inconsistencia si el user existe pero el perfil usuario no se creo
             perfil = Usuario.objects.create(
                 user=user,
                 nombre=user.get_full_name() or user.username,
                 rol=Usuario.Roles.VENDEDOR,
             )
-#       respuesta de exito: retorno los datos del usuario con codigo 200 
-        return Response({
-            "id": user.id,
-            "username": user.username,
-            "nombre": perfil.nombre,
-            "rol": perfil.rol,
-        }, status=status.HTTP_200_OK)
-    # condicion de error en caso de que las credenciales sean none o invalidas
-    return Response({"Error": "Credenciales inválidas"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # respuesta de exito retorna los datos del usuario con codigo 200
+        return Response(
+            {
+                "id": user.id,
+                "username": user.username,
+                "nombre": perfil.nombre,
+                "rol": perfil.rol,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    # condicion de error si las credenciales son none o invalidas
+    return Response({"Error": "Credenciales invalidas"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET", "PUT", "DELETE"])
+# vista para obtener actualizar o eliminar un usuario especifico por id
+def usuario_detalle(request, pk):
+    try:
+        usuario = Usuario.objects.get(pk=pk)
+    except Usuario.DoesNotExist:
+        # si el usuario no existe se responde con 404
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        # devuelve el detalle de un solo usuario
+        serializer = UsuarioSerializer(usuario)
+        return Response(serializer.data)
+
+    if request.method == "PUT":
+        # actualiza parcialmente los datos del usuario
+        serializer = UsuarioSerializer(usuario, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        # si hay errores de validacion responde con 400 y el detalle
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == "DELETE":
+        # elimina el usuario de la base de datos
+        usuario.delete()
+        # devuelve 204 no content para indicar que se borro correctamente
+        return Response(status=status.HTTP_204_NO_CONTENT)

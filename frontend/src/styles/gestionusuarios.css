@@ -1,13 +1,222 @@
-
-
-
-.gestion-usuarios-page {
-      background-image: url("../../../media/background/Patrón de Botillería Gran Pirula.png");
-  background-repeat: repeat;
-  background-position: top left;
-  background-attachment: fixed;
-background-size: 300px;
-  background-color: white;
+.user-admin-shell {
+  background-color: #ffffff;
   min-height: 100vh;
+}
+
+.user-admin-hero {
+  text-align: center;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 32px 16px 20px;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.user-admin-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 4px;
+}
+
+.user-admin-subtitle {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.user-admin-body {
+  padding: 24px 24px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.user-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.user-search-input {
+  width: 260px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+  color: #000;
+  background-color: #fff;
+}
+
+.user-search-input:focus {
+  border-color: #111827;
+  box-shadow: 0 0 0 1px #111827;
+  outline: none;
+}
+
+.user-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.user-table thead th {
+  background: #000;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  padding: 14px 18px;
+  text-align: left;
+}
+
+.user-table tbody td {
+  padding: 14px 18px;
+  font-size: 0.9rem;
+  font-weight: 450;
+  color: #000000;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+}
+
+.user-table tbody tr:hover {
+  background: rgba(2, 2, 2, 0.08);
+}
+
+.user-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.user-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.user-modal {
+  width: min(720px, 95vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 22px 22px 18px;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.3);
+}
+
+.user-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 8px;
+}
+
+.user-modal-close {
+  border: none;
+  background: transparent;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: #111;
+  cursor: pointer;
+  padding: 0;
+}
+
+.user-modal-spacer {
+  width: 1.6rem;
+}
+
+.user-modal .form-control,
+.user-modal .form-select,
+.user-modal textarea {
+  border-radius: 10px;
+  font-size: 0.95rem;
+  padding: 9px 12px;
+  color: #000;
+  background-color: #fff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.user-modal .form-control:focus,
+.user-modal .form-select:focus,
+.user-modal textarea:focus {
+  border-color: #111827;
+  box-shadow: 0 0 0 1px #111827;
+  outline: none;
+}
+
+.user-modal textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.user-modal .btn.btn-dark {
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+@media (max-width: 768px) {
+  .user-admin-body {
+    padding: 20px 16px 28px;
+  }
+
+  .user-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .user-search-input {
     width: 100%;
+  }
+
+  .user-new-btn {
+    width: 100%;
+  }
+
+  .user-modal {
+    padding: 18px 14px 14px;
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .user-admin-hero {
+    padding: 20px 1rem 12px;
+  }
+
+  .user-admin-title {
+    font-size: 1.6rem;
+  }
+
+  .user-admin-body {
+    padding: 18px 12px 24px;
+  }
+
+  .user-table {
+    min-width: 700px;
+  }
 }

@@ -1,21 +1,35 @@
+import { useState } from "react";
+
 const ProveedorList = ({ proveedores = [], onEdit, onDelete }) => {
-  const data = Array.isArray(proveedores) ? proveedores : [];
+  const [search, setSearch] = useState("");
+
+  const filtrados = proveedores.filter((p) =>
+    (p.nombre || "").toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <div>
+    <div className="proveedor-card">
+      <input
+        type="text"
+        className="categoria-search"
+        placeholder="Buscar proveedor por nombre..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
       <table className="inventario-table">
         <thead>
           <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Telofono</th>
+            <th>Teléfono</th>
             <th>Correo</th>
-            <th>Direccion</th>
-            <th>Acciones</th>
+            <th>Dirección</th>
+            <th style={{ width: "120px" }}>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {data.map((p) => (
+          {filtrados.map((p) => (
             <tr key={p.id}>
               <td>{p.id}</td>
               <td>{p.nombre}</td>
@@ -23,10 +37,7 @@ const ProveedorList = ({ proveedores = [], onEdit, onDelete }) => {
               <td>{p.correo || "-"}</td>
               <td>{p.direccion || "-"}</td>
               <td className="proveedor-acciones">
-                <button
-                  className="btn-actions"
-                  onClick={() => onEdit && onEdit(p)}
-                >
+                <button className="btn-actions" onClick={() => onEdit(p)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -34,10 +45,10 @@ const ProveedorList = ({ proveedores = [], onEdit, onDelete }) => {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-edit"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="icon icon-tabler icons-tabler-outline icon-tabler-edit"
                   >
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
@@ -45,10 +56,7 @@ const ProveedorList = ({ proveedores = [], onEdit, onDelete }) => {
                     <path d="M16 5l3 3" />
                   </svg>
                 </button>
-                <button
-                  className="btn-actions"
-                  onClick={() => onDelete && onDelete(p.id)}
-                >
+                <button className="btn-actions" onClick={() => onDelete(p.id)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -56,10 +64,10 @@ const ProveedorList = ({ proveedores = [], onEdit, onDelete }) => {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="icon icon-tabler icons-tabler-outline icon-tabler-trash"
                   >
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M4 7l16 0" />
@@ -74,9 +82,10 @@ const ProveedorList = ({ proveedores = [], onEdit, onDelete }) => {
           ))}
         </tbody>
       </table>
-      {data.length === 0 && (
-        <p style={{ marginTop: 12, color: "#6b7280" }}>
-          No hay proveedores cargados.
+
+      {filtrados.length === 0 && (
+        <p style={{ marginTop: "20px", color: "#6b7280" }}>
+          No se encontraron proveedores.
         </p>
       )}
     </div>

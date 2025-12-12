@@ -110,7 +110,6 @@ export default function ProveedoresPage() {
         >
           <div className="product-modal" onClick={(e) => e.stopPropagation()}>
             <div className="product-modal-head">
-              <h3 className="mb-0">Nuevo proveedor</h3>
               <button
                 type="button"
                 className="product-modal-close"
@@ -119,6 +118,8 @@ export default function ProveedoresPage() {
               >
                 ×
               </button>
+              <h3 className="mb-0">Nuevo proveedor</h3>
+              <span className="product-modal-spacer"></span>
             </div>
             <ProveedorForm
               onAdd={async (payload) => {

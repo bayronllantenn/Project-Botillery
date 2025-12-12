@@ -16,13 +16,14 @@
   display: flex;
   align-items: center;
   background-color: #000;
-  padding: 8px 4%;
+  padding: 3px 4%;
 }
 
 .navbar .logo {
   width: 75px;
   cursor: pointer;
   margin-right: 10px;
+  padding: 5px 2px;
 }
 
 .navbar ul {
@@ -56,9 +57,9 @@
   gap: 6px;
   padding: 6px 14px;
   border-radius: 999px;
-  border: 1px solid #3f3f3f;
-  background-color: #111;
-  color: #fff;
+  border: 1px solid #000000;
+  background-color: #000000;
+  color: #ffffff;
   font-size: 0.9rem;
   cursor: pointer;
 }
@@ -75,7 +76,8 @@
 }
 
 .nav-btn-logout {
-  background-color: #000;
+  color: #000;
+  background-color: #ffffff;
 }
 
 .nav-btn-menu {
@@ -91,7 +93,7 @@
   width: 70%;
   max-width: 280px;
   height: 100vh;
-  background: #111;
+  background: #000000;
   color: #fff;
   padding: 1rem;
   z-index: 1000;
@@ -113,7 +115,7 @@
 
 .side-menu button {
   border: none;
-  background: #222;
+  background: #000000;
   color: #fff;
   padding: 0.5rem 0.75rem;
   border-radius: 4px;
@@ -122,7 +124,7 @@
 }
 
 .side-menu button:hover {
-  background: #333;
+  background: #383838;
 }
 
 @media (max-width: 600px) {

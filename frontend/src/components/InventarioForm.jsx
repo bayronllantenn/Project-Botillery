@@ -6,6 +6,7 @@ export default function InventarioForm({
   proveedores = [],
   onAdd,
   onClose,
+  editando,
 }) {
   const [form, setForm] = useState({
     categoria: "",
@@ -20,6 +21,7 @@ export default function InventarioForm({
     descripcion: "",
     imagen: null,
   });
+
   if (!visible) return null;
 
   const handleChange = (e) => {
@@ -66,16 +68,21 @@ export default function InventarioForm({
     <div className="product-modal-backdrop" onClick={handleClose}>
       <div className="product-modal" onClick={(e) => e.stopPropagation()}>
         <div className="product-modal-head">
-          <h3 className="mb-0">Agregar producto</h3>
           <button
             type="button"
             className="product-modal-close"
             onClick={handleClose}
             aria-label="Cerrar formulario"
-          ></button>
+          >
+            ×
+          </button>
+          <h3 className="mb-0">
+            {editando ? "Editar producto" : "Agregar producto"}
+          </h3>
+          <span className="product-modal-spacer"></span>
         </div>
 
-        <form onSubmit={handleSubmit} className="row g-2 p-3 border rounded">
+        <form onSubmit={handleSubmit} className="row g-2 p-3">
           <div className="col-md-6">
             <select
               name="categoria"
@@ -92,6 +99,7 @@ export default function InventarioForm({
               ))}
             </select>
           </div>
+
           <div className="col-md-6">
             <select
               name="proveedor"
@@ -107,6 +115,7 @@ export default function InventarioForm({
               ))}
             </select>
           </div>
+
           <div className="col-12">
             <input
               name="nombre"
@@ -117,6 +126,7 @@ export default function InventarioForm({
               onChange={handleChange}
             />
           </div>
+
           <div className="col-12">
             <input
               name="formato_venta"
@@ -127,6 +137,7 @@ export default function InventarioForm({
               onChange={handleChange}
             />
           </div>
+
           <div className="col-12">
             <input
               name="codigo_barra"
@@ -135,38 +146,53 @@ export default function InventarioForm({
               value={form.codigo_barra}
               onChange={handleChange}
               inputMode="numeric"
-              minLength={13}
+              minLength={10}
               maxLength={14}
-              pattern="[0-9]{13,14}"
-              title="Ingresa 13 o 14 dígitos"
+              pattern="[0-9]{10,14}"
+              title="Ingresa minimo 10 dígitos"
               required
             />
           </div>
-          <div className="col-4">
-            <input
-              type="number"
-              name="precio"
-              className="form-control"
-              placeholder="Precio"
-              required
-              min="1"
-              value={form.precio}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="col-4">
+
+          <div className="col-12 col-md-6">
             <input
               type="number"
               name="stock"
               className="form-control"
-              placeholder="Stock Inicial"
+              placeholder="Stock inicial"
               required
               min="0"
               value={form.stock}
               onChange={handleChange}
             />
           </div>
-          <div className="col-md-4">
+
+          <div className="col-12 col-md-6">
+            <input
+              type="number"
+              name="stock_minimo"
+              className="form-control"
+              placeholder="Stock mínimo (alerta)"
+              min="0"
+              value={form.stock_minimo}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="col-12 col-md-6">
+            <input
+              type="number"
+              name="precio"
+              className="form-control"
+              placeholder="Precio venta"
+              required
+              min="1"
+              value={form.precio}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="col-12 col-md-6">
             <input
               type="number"
               name="costo"
@@ -177,17 +203,7 @@ export default function InventarioForm({
               onChange={handleChange}
             />
           </div>
-          <div className="col-4">
-            <input
-              type="number"
-              name="stock_minimo"
-              className="form-control"
-              placeholder="Stock minimo (alerta)"
-              min="0"
-              value={form.stock_minimo}
-              onChange={handleChange}
-            />
-          </div>
+
           <div className="col-12">
             <textarea
               name="descripcion"
@@ -197,6 +213,7 @@ export default function InventarioForm({
               onChange={handleChange}
             />
           </div>
+
           <div className="col-12">
             <input
               type="file"
@@ -206,9 +223,10 @@ export default function InventarioForm({
               onChange={handleChange}
             />
           </div>
+
           <div className="col-12">
             <button className="btn btn-dark w-100" type="submit">
-              Guardar
+              {editando ? "Guardar cambios" : "Guardar"}
             </button>
           </div>
         </form>

@@ -19,7 +19,7 @@ export default function VendedorList({ productos = [], onVer }) {
           return (
             <div className="col" key={p.id}>
               <div
-                className="card shadow-sm h-100 producto-card"
+                className="card h-100 producto-card"
                 onClick={() => onVer?.(p)}
                 style={{ cursor: "pointer" }}
                 title={`Ver detalles de ${p.nombre}`}
@@ -45,10 +45,16 @@ export default function VendedorList({ productos = [], onVer }) {
 
                   <p className="p-nombre">{p.nombre}</p>
                   <p className="p-formato">{p.formato_venta}</p>
-                  <p className="p-precio  mt-auto">
+                  <p className="p-precio mt-auto">
                     $ {fmt.format(Number(p.precio))}
                   </p>
-                  <p className="p-stock">Stock: {p.stock}</p>
+                  <p
+                    className={
+                      p.stock === 0 ? "p-stock text-danger" : "p-stock"
+                    }
+                  >
+                    Stock: {p.stock}
+                  </p>
                   <div className="d-flex justify-content-end align-items-center mt-auto producto-actions"></div>
                 </div>
               </div>

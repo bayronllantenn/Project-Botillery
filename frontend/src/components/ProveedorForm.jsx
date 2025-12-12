@@ -32,17 +32,22 @@ const ProveedorForm = ({ onAdd }) => {
   };
 
   return (
-    <form className="row g-2 proveedor-form" onSubmit={handleSubmit}>
-      <div className="col-md-6">
+    <form className="proveedor-form" onSubmit={handleSubmit}>
+      <div>
+        <span className="product-modal-spacer"></span>
+      </div>
+
+      <div className="mb-3">
         <input
           type="text"
           className="form-control"
-          placeholder="Proveedor"
+          placeholder="Nombre proveedor"
           value={form.nombre}
           onChange={(e) => setForm({ ...form, nombre: e.target.value })}
         />
       </div>
-      <div className="col-md-6">
+
+      <div className="mb-3">
         <input
           type="text"
           className="form-control"
@@ -51,7 +56,8 @@ const ProveedorForm = ({ onAdd }) => {
           onChange={(e) => setForm({ ...form, telefono: e.target.value })}
         />
       </div>
-      <div className="col-md-6">
+
+      <div className="mb-3">
         <input
           type="email"
           className="form-control"
@@ -60,7 +66,8 @@ const ProveedorForm = ({ onAdd }) => {
           onChange={(e) => setForm({ ...form, correo: e.target.value })}
         />
       </div>
-      <div className="col-md-6">
+
+      <div className="mb-3">
         <input
           type="text"
           className="form-control"
@@ -69,11 +76,10 @@ const ProveedorForm = ({ onAdd }) => {
           onChange={(e) => setForm({ ...form, direccion: e.target.value })}
         />
       </div>
-      <div className="col-12">
-        <button type="submit" className="btn btn-dark botonaso">
-          Agregar
-        </button>
-      </div>
+
+      <button type="submit" className="btn btn-dark w-100">
+        Agregar
+      </button>
     </form>
   );
 };

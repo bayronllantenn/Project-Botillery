@@ -9,5 +9,5 @@ export const unwrapError = (e) =>
 peticiones tomanto esta direccion de la variable REACT APP .... si no existe usa la URL de texto plano */
 
 export default axios.create({
-  baseURL: process.env.REACT_APP_API_BASE || "http://localhost:8000/api",
+  baseURL: process.env.REACT_APP_API_BASE || "http://localhost:8000/api/",
 });

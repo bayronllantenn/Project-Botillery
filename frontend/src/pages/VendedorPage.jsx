@@ -2,21 +2,18 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import "../styles/vendedor.css";
 import VendedorList from "../components/VendedorList";
+import InventarioForm from "../components/InventarioForm";
 
 const fmt = new Intl.NumberFormat("es-CL");
 
 export default function VendedorPage() {
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
+  const [proveedores, setProveedores] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("todos");
-  const [venta, setVenta] = useState({ producto_id: "", cantidad: "" });
-  const [mostrarVenta, setMostrarVenta] = useState(false);
   const [productoActivo, setProductoActivo] = useState(null);
-  const [resumen, setResumen] = useState({
-    mis_ventas: 0,
-    total_vendido: 0,
-    productos_disponibles: 0,
-  });
+  const [busqueda, setBusqueda] = useState("");
+  const [crearAbierto, setCrearAbierto] = useState(false);
 
   const loadAll = async () => {
     try {
@@ -24,82 +21,38 @@ export default function VendedorPage() {
       setProductos(prodsRes.data);
       const catsRes = await api.get("/inventario/categorias/");
       setCategorias(catsRes.data);
-    } catch (error) {
+      const provRes = await api.get("/inventario/proveedores/");
+      setProveedores(provRes.data);
+    } catch {
       setProductos([]);
       alert("No se pudieron cargar los productos");
     }
   };
 
-  const productosFiltrados =
-    categoriaSeleccionada === "todos"
-      ? productos
-      : productos.filter(
-          (p) => p.categoria_detalle?.id === categoriaSeleccionada
-        );
-
-  const loadResumen = async () => {
-    try {
-      const res = await api.get("/ventas/resumen/");
-      setResumen(res.data);
-    } catch {
-      setResumen({
-        mis_ventas: 0,
-        total_vendido: 0,
-        productos_disponibles: 0,
-      });
-    }
-  };
-
   useEffect(() => {
     loadAll();
-    loadResumen();
   }, []);
 
-  const abrirVenta = (p) => {
-    setVenta({
-      producto_id: p ? String(p.id) : "",
-      cantidad: "",
-    });
-    setMostrarVenta(true);
-  };
+  const productosFiltrados = productos
+    .filter((p) =>
+      categoriaSeleccionada === "todos"
+        ? true
+        : p.categoria_detalle?.id === categoriaSeleccionada
+    )
+    .filter((p) => p.nombre.toLowerCase().includes(busqueda.toLowerCase()));
 
-  const registrarVenta = async (e) => {
-    e.preventDefault();
-    const pid = parseInt(venta.producto_id, 10);
-    const cant = parseInt(venta.cantidad, 10);
-
-    if (!pid || !Number.isInteger(cant) || cant <= 0) {
-      alert("Selecciona un producto y una cantidad mayor a 0");
-      return;
-    }
-
-    const productoSeleccionado = productos.find((p) => p.id === pid);
-    if (!productoSeleccionado) {
-      alert("Producto no encontrado");
-      return;
-    }
-
-    try {
-      await api.post("/ventas/crear/", {
-        detalles: [
-          {
-            producto_id: pid,
-            cantidad: cant,
-            precio_unitario: productoSeleccionado.precio,
-          },
-        ],
-      });
-
-      setMostrarVenta(false);
-      setVenta({ producto_id: "", cantidad: "" });
-      await loadAll();
-      await loadResumen();
-    } catch (error) {
-      alert("No se pudo registrar la venta");
-    }
-  };
   const verProducto = (p) => setProductoActivo(p);
   const cerrarDetalle = () => setProductoActivo(null);
+
+  const handleAddProducto = async (datosAEnviar) => {
+    try {
+      const res = await api.post("/inventario/productos/", datosAEnviar);
+      setProductos((prev) => [...prev, res.data]);
+      setCrearAbierto(false);
+    } catch {
+      alert("No se pudo crear el producto");
+    }
+  };
 
   return (
     <main>
@@ -107,142 +60,63 @@ export default function VendedorPage() {
         <div className="hero-box">
           <h1>Panel de Vendedor</h1>
           <p className="text-body-secondary">
-            Registra ventas y consulta el inventario
+            Gestiona el inventario de la botillería
           </p>
 
-          <div className="seller-cards d-flex flex-column flex-md-row gap-3">
-            <div className="seller-card">
-              <div className="seller-card-head">
-                <span>Venta de hoy</span>
-              </div>
-              <div className="seller-card-body">
-                <span className="seller-number">{resumen.mis_ventas}</span>
-              </div>
-            </div>
+          <div className="hero-actions d-flex flex-column flex-md-row gap-2 justify-content-between align-items-start align-items-md-center">
+            <input
+              type="text"
+              className="form-control w-auto"
+              placeholder="Buscar producto..."
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+            />
 
-            <div className="seller-card">
-              <div className="seller-card-head">
-                <span>Total vendido hoy</span>
-              </div>
-              <div className="seller-card-body">
-                <span className="seller-number">
-                  ${fmt.format(Number(resumen.total_vendido || 0))}
-                </span>
-              </div>
-            </div>
-
-            <div className="seller-card">
-              <div className="seller-card-head">
-                <span>Productos en stock</span>
-              </div>
-              <div className="seller-card-body">
-                <span className="seller-number">
-                  {resumen.productos_disponibles}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="d-flex justify-content-center gap-2 flex-wrap mt-3">
             <button
               type="button"
-              className="btn-productos"
-              onClick={() => abrirVenta(null)}
+              className="btn btn-dark"
+              onClick={() => setCrearAbierto(true)}
             >
-              Agregar venta
+              Agregar producto
             </button>
+          </div>
+
+          <div className="vendedor-tab bfiltro overflow-auto">
+            <div className="d-inline-flex gap-2">
+              <button
+                type="button"
+                className={`botones-filtro ${
+                  categoriaSeleccionada === "todos" ? "active" : ""
+                }`}
+                onClick={() => setCategoriaSeleccionada("todos")}
+              >
+                Todos
+              </button>
+              {categorias.map((c) => (
+                <button
+                  key={c.id}
+                  className={`botones-filtro ${
+                    categoriaSeleccionada === c.id ? "active" : ""
+                  }`}
+                  onClick={() => setCategoriaSeleccionada(c.id)}
+                >
+                  {c.nombre}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
         <div className="hero-gap"></div>
       </div>
 
-      <div className="vendedor-tab bfiltro overflow-auto">
-        <div className="d-inline-flex gap-2">
-          <button
-            type="button"
-            className={`botones-filtro ${
-              categoriaSeleccionada === "todos" ? "active" : ""
-            }`}
-            onClick={() => setCategoriaSeleccionada("todos")}
-          >
-            Todos
-          </button>
-          {categorias.map((c) => (
-            <button
-              key={c.id}
-              className={`botones-filtro ${
-                categoriaSeleccionada === c.id ? "active" : ""
-              }`}
-              onClick={() => setCategoriaSeleccionada(c.id)}
-            >
-              {c.nombre}
-            </button>
-          ))}
-        </div>
-      </div>
-
       <section className="album bg-body">
-        <div className="container">
-          <VendedorList productos={productosFiltrados} onVer={verProducto} />
-        </div>
-      </section>
-
-      {mostrarVenta && (
-        <div className="overlay-productos">
-          <div
-            className="overlay-backdrop"
-            onClick={() => setMostrarVenta(false)}
-          />
-          <div className="overlay-modal">
-            <div className="overlay-modal-header">
-              <h5>Registrar venta</h5>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={() => setMostrarVenta(false)}
-              />
-            </div>
-            <div className="overlay-modal-body">
-              <form onSubmit={registrarVenta} className="row g-2">
-                <div className="col-12">
-                  <select
-                    className="form-select"
-                    value={venta.producto_id}
-                    onChange={(e) =>
-                      setVenta({ ...venta, producto_id: e.target.value })
-                    }
-                  >
-                    <option value="">Producto</option>
-                    {productos.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.nombre} - {p.formato_venta} (Stock: {p.stock})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-12">
-                  <input
-                    className="form-control"
-                    type="number"
-                    min={1}
-                    placeholder="Cantidad vendida"
-                    value={venta.cantidad}
-                    onChange={(e) =>
-                      setVenta({ ...venta, cantidad: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="col-12">
-                  <button className="btn btn-dark w-100" type="submit">
-                    Descontar stock
-                  </button>
-                </div>
-              </form>
-            </div>
+        <div className="body-productos-todo">
+          <div className="container">
+            <VendedorList productos={productosFiltrados} onVer={verProducto} />
           </div>
         </div>
-      )}
+      </section>
 
       {productoActivo && (
         <div className="overlay-productos">
@@ -262,7 +136,6 @@ export default function VendedorPage() {
                   src={productoActivo.imagen}
                   alt={productoActivo.nombre}
                   className="img-fluid mb-3"
-                  style={{ maxHeight: 1000, width: "100%" }}
                 />
               )}
               <p>
@@ -286,6 +159,17 @@ export default function VendedorPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {crearAbierto && (
+        <InventarioForm
+          visible={crearAbierto}
+          categorias={categorias}
+          proveedores={proveedores}
+          editando={false}
+          onClose={() => setCrearAbierto(false)}
+          onAdd={handleAddProducto}
+        />
       )}
     </main>
   );

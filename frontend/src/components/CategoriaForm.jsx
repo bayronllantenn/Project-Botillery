@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const CategoriaForm = ({ onAdd, onEdit, editando }) => {
+const CategoriaForm = ({ onAdd, onEdit, editando, onClose }) => {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
 
@@ -30,25 +30,22 @@ const CategoriaForm = ({ onAdd, onEdit, editando }) => {
 
     setNombre("");
     setDescripcion("");
+    onClose && onClose();
   };
 
   return (
     <form className="categoria-form" onSubmit={handleSubmit}>
-      <h4>{editando ? "Editar Categoría" : "Agregar Categoría"}</h4>
-
       <div className="mb-3">
-        <label className="form-label">Nombre</label>
         <input
           type="text"
           className="form-control"
-          placeholder="Ej: Vinos, Cervezas, Whisky, Bebidas"
+          placeholder="Nombre Categoria: Vinos, Cervezas, Bebidas"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
         />
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Descripción</label>
         <textarea
           rows="3"
           className="form-control"
@@ -58,8 +55,8 @@ const CategoriaForm = ({ onAdd, onEdit, editando }) => {
         />
       </div>
 
-      <button type="submit" className="btn btn-primary">
-        {editando ? "Guardar Cambios" : "Agregar"}
+      <button type="submit" className="btn btn-dark w-100">
+        {editando ? "Guardar cambios" : "Guardar"}
       </button>
     </form>
   );

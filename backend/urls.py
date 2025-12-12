@@ -12,11 +12,13 @@ def home(request):
         "inventario": "/api/inventario/",
         "ventas": "/api/ventas/",
     })
-
 urlpatterns = [
     path("", home),
     path("admin/", admin.site.urls),
-    path("api/usuarios/", include("apps.usuarios.urls")),
+    path("api/", include("apps.usuarios.urls")),      
     path("api/inventario/", include("apps.inventario.urls")),
     path("api/ventas/", include("apps.ventas.urls")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
+]
+# ruta para acceder a /media/ donde se encuentran las imagenes del producto
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

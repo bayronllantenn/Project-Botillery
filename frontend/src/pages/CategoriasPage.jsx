@@ -116,6 +116,8 @@ export default function CategoriasPage() {
             setMostrarForm(false);
           }}
         >
+          {" "}
+          {/* nos sirve para evitar que se cierre la confirmacion del productmodal al apretar encima de este */}
           <div className="product-modal" onClick={(e) => e.stopPropagation()}>
             <div className="product-modal-head">
               <button
@@ -128,7 +130,10 @@ export default function CategoriasPage() {
               >
                 ×
               </button>
+              <h3 className="mb-0">Agregar categoría</h3>
+              <span className="product-modal-spacer"></span>
             </div>
+
             <CategoriaForm
               onAdd={async (data) => {
                 await add(data);
@@ -138,6 +143,7 @@ export default function CategoriasPage() {
           </div>
         </div>
       )}
+
       {catIdEliminar !== null && (
         <div className="product-modal-backdrop" onClick={cancelarEliminar}>
           <div

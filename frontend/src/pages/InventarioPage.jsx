@@ -5,10 +5,8 @@ import ProveedoresPage from "./ProveedoresPage";
 import InventarioForm from "../components/InventarioForm";
 import InventarioList from "../components/InventarioList";
 import "../styles/inventario.css";
-import { useNavigate } from "react-router-dom";
 
 export default function InventarioPage() {
-  const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [proveedores, setProveedores] = useState([]);
@@ -165,7 +163,7 @@ export default function InventarioPage() {
   const blurActivo = tab === "productos" && mostrarForm;
 
   return (
-    <>
+    <div className="container">
       <main className={blurActivo ? "admin-blur" : ""}>
         <div className="hero">
           <h1>Panel de Administracion</h1>
@@ -174,13 +172,6 @@ export default function InventarioPage() {
           </p>
 
           <div className="admin-tabs">
-            <button
-              type="button"
-              className="admin-tab"
-              onClick={() => navigate("/admin/usuarios")}
-            >
-              Usuarios
-            </button>
             <button
               type="button"
               className={`admin-tab ${tab === "productos" ? "active" : ""}`}
@@ -242,6 +233,6 @@ export default function InventarioPage() {
         onAdd={addProducto}
         onClose={() => setMostrarForm(false)}
       />
-    </>
+    </div>
   );
 }
